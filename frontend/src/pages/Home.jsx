@@ -19,8 +19,8 @@ function Home() {
         dispatch(getProduct({keyword:""}));
     }, [dispatch])
     useEffect(() => {
-        // Default: show the top high-discount deals
-        dispatch(getDiscountedProducts({ minDiscount: 40, limit: 10 }));
+        // Default: show all discounted products in Hot Deals
+        dispatch(getDiscountedProducts({ minDiscount: 1, limit: 50 }));
     }, [dispatch]);
     useEffect(()=>{
         if(error){

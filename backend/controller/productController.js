@@ -2,7 +2,9 @@ import Product from '../models/productModel.js';
 import HandleError from '../utils/handleError.js';
 import handleAsyncError from '../middleware/handleAsyncError.js';
 import APIFunctionality from '../utils/apiFunctionality.js';
+import uploadToCloudinary from '../utils/cloudinaryUpload.js';
 import { v2 as cloudinary } from 'cloudinary';
+import Order from '../models/orderModel.js';
 
 // http://localhost:8000/api/v1/product/68d113fc2fd8c0a83c5a4c71?keyword=makeup
 
@@ -16,13 +18,8 @@ export const createProducts = handleAsyncError(async (req, res, next) => {
     }
     const imageLinks = [];
     for (let i = 0; i < image.length; i++) {
-        const result = await cloudinary.uploader.upload(image[i], {
-            folder: 'products'
-        })
-        imageLinks.push({
-            public_id: result.public_id,
-            url: result.secure_url
-        })
+        const imageLink = await uploadToCloudinary(image[i], 'products');
+        imageLinks.push(imageLink);
     }
     req.body.image = imageLinks;
 
@@ -91,13 +88,8 @@ export const updateProduct = handleAsyncError(async (req, res, next) => {
         //Upload new images
         const imageLinks = [];
         for (let i = 0; i < images.length; i++) {
-            const result = await cloudinary.uploader.upload(images[i], {
-                folder: 'products'
-            })
-            imageLinks.push({
-                public_id: result.public_id,
-                url: result.secure_url
-            })
+            const imageLink = await uploadToCloudinary(images[i], 'products');
+            imageLinks.push(imageLink);
         }
         req.body.image = imageLinks;
     }
@@ -161,6 +153,20 @@ export const getDiscountedProducts = handleAsyncError(async (req, res, next) => 
 // 6) Creating and Updating Review
 export const createReviewForProduct = handleAsyncError(async (req, res, next) => {
     const { rating, comment, productId } = req.body;
+    const hasDeliveredPurchase = await Order.exists({
+        user: req.user._id,
+        orderStatus: 'Delivered',
+        orderItems: {
+            $elemMatch: {
+                product: productId
+            }
+        }
+    });
+
+    if (!hasDeliveredPurchase) {
+        return next(new HandleError("You can review this product only after it has been delivered to you.", 403));
+    }
+
     const review = {
         user: req.user._id,
         name: req.user.name,

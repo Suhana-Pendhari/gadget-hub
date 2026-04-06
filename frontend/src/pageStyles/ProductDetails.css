@@ -58,6 +58,35 @@
     color: var(--text-primary);
   }
   
+  .product-price-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-original-price {
+    color: #7b7b7b;
+    text-decoration: line-through;
+    font-weight: 600;
+  }
+
+  .product-discounted-price {
+    color: #d32f2f;
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+
+  .product-discount-label {
+    background: rgba(255, 82, 82, 0.12);
+    color: #d32f2f;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
   .rating {
     display: flex;
     justify-content: start;
@@ -107,17 +136,19 @@
   .add-to-cart-btn {
     width: 100%;
     padding: 12px 20px;
-    background: var(--border-color);
-    border: 1px solid var(--bg-primary);
+    background: #0b6df6;
+    border: 1px solid #0955d4;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     margin: 20px 0;
-    color: var(--text-primary);
+    color: white;
+    transition: background 0.2s ease, transform 0.2s ease;
   }
   
   .add-to-cart-btn:hover {
-    background: var(--bg-secondary);
+    background: #0955d4;
+    transform: translateY(-1px);
   }
   
 
@@ -133,6 +164,7 @@
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
+    border: 1px solid var(--border-color);
   }
   
   .review-input {
@@ -148,16 +180,43 @@
   }
   
   .submit-review-btn {
-    background: var(--bg-primary);
+    background: var(--primary-main);
     color: var(--text-light);
     padding: 10px 20px;
-    border: none;
+    border: 1px solid var(--primary-main);
     border-radius: 4px;
     cursor: pointer;
   }
   
   .submit-review-btn:hover {
     background: var(--primary-dark);
+  }
+
+  .review-form-disabled {
+    background: #f3f4f6;
+    opacity: 0.85;
+  }
+
+  .review-form-disabled .review-input,
+  .review-form-disabled .submit-review-btn {
+    pointer-events: none;
+  }
+
+  .review-form-disabled .review-input {
+    background: #f9fafb;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+  }
+
+  .review-form-disabled .submit-review-btn {
+    background: #d1d5db;
+    color: #6b7280;
+  }
+
+  .review-locked-note {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
   }
   
 

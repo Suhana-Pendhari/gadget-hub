@@ -17,7 +17,8 @@ export const createProduct = createAsyncThunk('admin/createProduct', async (prod
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            timeout: 120000
         }
         const { data } = await axios.post('/api/v1/admin/product/create', productData, config);
         return data;
@@ -32,7 +33,8 @@ export const updateProduct = createAsyncThunk('admin/updateProduct', async ({ id
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            timeout: 120000
         }
         const { data } = await axios.put(`/api/v1/admin/product/${id}`, formData, config);
         return data;

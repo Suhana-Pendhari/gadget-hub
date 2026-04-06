@@ -1,4 +1,4 @@
-
+/* 
   .star {
     font-size: 1.5rem;
     cursor: pointer;
@@ -23,5 +23,521 @@
     font-size: 0.9rem;
     color: var(--text-secondary);
     margin-left: 0.5rem;
+  } */
+
+
+
+
+
+/* Ratings CSS - Gadget Hub Theme */
+
+/* Base Star Rating */
+.star {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary, #9ca3af);
+  display: inline-block;
+}
+
+.star.filled {
+  color: var(--gadget-gold, #EFD510);
+  text-shadow: 0 0 5px rgba(239, 213, 16, 0.2);
+}
+
+.star.half-filled {
+  position: relative;
+  display: inline-block;
+  color: var(--text-secondary, #9ca3af);
+}
+
+.star.half-filled::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: var(--gadget-gold, #EFD510);
+}
+
+.star.empty {
+  color: var(--text-secondary, #d1d5db);
+}
+
+.star:hover {
+  transform: scale(1.1);
+  color: var(--gadget-orange, #F2910A);
+}
+
+.star:active {
+  transform: scale(0.95);
+}
+
+/* Disabled State (for product display, not interactive) */
+.star.disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.star.disabled:hover {
+  transform: none;
+  color: inherit;
+}
+
+.star.disabled.filled:hover {
+  color: var(--gadget-gold, #EFD510);
+}
+
+/* Product Card Rating */
+.productCardSpan {
+  font-size: 0.9rem;
+  color: var(--gadget-charcoal, #383838);
+  margin-left: 0.5rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Rating Container */
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+/* Interactive Rating (for reviews/forms) */
+.rating-interactive {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(239, 213, 16, 0.05);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.rating-interactive:hover {
+  background: rgba(239, 213, 16, 0.1);
+}
+
+.rating-interactive .star {
+  font-size: 2rem;
+}
+
+/* Rating Value Display */
+.rating-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(44, 45, 52, 0.1);
+}
+
+.rating-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gadget-dark, #2C2D34);
+}
+
+.rating-max {
+  font-size: 0.9rem;
+  color: var(--gadget-charcoal, #383838);
+  opacity: 0.7;
+}
+
+.rating-count {
+  font-size: 0.9rem;
+  color: var(--gadget-charcoal, #383838);
+  margin-left: 0.3rem;
+}
+
+/* Progress Bar Rating (for detailed reviews) */
+.rating-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+.rating-label {
+  min-width: 60px;
+  font-size: 0.9rem;
+  color: var(--gadget-dark, #2C2D34);
+  font-weight: 500;
+}
+
+.rating-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(44, 45, 52, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rating-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, 
+    var(--gadget-gold, #EFD510),
+    var(--gadget-orange, #F2910A)
+  );
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.rating-percentage {
+  min-width: 45px;
+  font-size: 0.9rem;
+  color: var(--gadget-charcoal, #383838);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Average Rating Display */
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.average-rating-large {
+  text-align: center;
+}
+
+.average-rating-number {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, 
+    var(--gadget-gold, #EFD510),
+    var(--gadget-red, #E94822)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.average-rating-stars {
+  margin: 0.5rem 0;
+}
+
+.average-rating-total {
+  font-size: 0.9rem;
+  color: var(--gadget-charcoal, #383838);
+}
+
+/* Review Item Rating */
+.review-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-rating .star {
+  font-size: 1rem;
+  cursor: default;
+}
+
+.review-rating .star:hover {
+  transform: none;
+}
+
+.review-date {
+  font-size: 0.8rem;
+  color: var(--gadget-charcoal, #383838);
+  opacity: 0.7;
+  margin-left: auto;
+}
+
+/* Rating Distribution */
+.rating-distribution {
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid rgba(44, 45, 52, 0.1);
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.rating-row:hover {
+  background: rgba(239, 213, 16, 0.05);
+}
+
+.rating-row.active {
+  background: rgba(239, 213, 16, 0.1);
+  border-left: 3px solid var(--gadget-gold, #EFD510);
+}
+
+.rating-stars-small {
+  display: flex;
+  gap: 0.2rem;
+  min-width: 70px;
+}
+
+.rating-stars-small .star {
+  font-size: 0.9rem;
+  cursor: default;
+}
+
+/* Color Variations */
+.rating-gold .star.filled {
+  color: var(--gadget-gold, #EFD510);
+}
+
+.rating-orange .star.filled {
+  color: var(--gadget-orange, #F2910A);
+}
+
+.rating-red .star.filled {
+  color: var(--gadget-red, #E94822);
+}
+
+.rating-gradient .star.filled {
+  background: linear-gradient(135deg, 
+    var(--gadget-gold, #EFD510),
+    var(--gadget-red, #E94822)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Size Variations */
+.star-sm {
+  font-size: 1rem;
+}
+
+.star-md {
+  font-size: 1.5rem;
+}
+
+.star-lg {
+  font-size: 2rem;
+}
+
+.star-xl {
+  font-size: 2.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .star {
+    font-size: 1.2rem;
   }
   
+  .rating-interactive .star {
+    font-size: 1.5rem;
+  }
+  
+  .average-rating-number {
+    font-size: 2.5rem;
+  }
+  
+  .average-rating {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .rating-progress-container {
+    gap: 0.5rem;
+  }
+  
+  .rating-label {
+    min-width: 50px;
+    font-size: 0.8rem;
+  }
+  
+  .star-sm {
+    font-size: 0.9rem;
+  }
+  
+  .star-lg {
+    font-size: 1.8rem;
+  }
+  
+  .star-xl {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .star {
+    font-size: 1rem;
+  }
+  
+  .productCardSpan {
+    font-size: 0.8rem;
+    margin-left: 0.3rem;
+  }
+  
+  .rating-value {
+    padding: 0.2rem 0.5rem;
+  }
+  
+  .rating-number {
+    font-size: 1rem;
+  }
+  
+  .rating-distribution {
+    padding: 0.8rem;
+  }
+  
+  .rating-row {
+    gap: 0.5rem;
+  }
+  
+  .rating-stars-small {
+    min-width: 60px;
+  }
+  
+  .star-sm {
+    font-size: 0.8rem;
+  }
+}
+
+/* Interactive States */
+.rating-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.rating-tooltip:hover::after {
+  content: attr(data-rating);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gadget-dark, #2C2D34);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  z-index: 10;
+  margin-bottom: 5px;
+}
+
+.rating-tooltip:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--gadget-dark, #2C2D34) transparent transparent transparent;
+  margin-bottom: -5px;
+  z-index: 10;
+}
+
+/* Rating Skeleton Loading */
+.rating-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skeleton-star {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(90deg, 
+    rgba(44, 45, 52, 0.05) 25%,
+    rgba(239, 213, 16, 0.1) 50%,
+    rgba(44, 45, 52, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  width: 60px;
+  height: 1rem;
+  background: linear-gradient(90deg, 
+    rgba(44, 45, 52, 0.05) 25%,
+    rgba(239, 213, 16, 0.1) 50%,
+    rgba(44, 45, 52, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Accessibility */
+.rating-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.rating-label {
+  cursor: pointer;
+}
+
+.rating-label:hover .star {
+  transform: scale(1.1);
+  color: var(--gadget-orange, #F2910A);
+}
+
+/* Usage Examples in Comments */
+/*
+  <!-- Basic Product Rating -->
+  <div class="rating-container">
+    <span class="star filled">★</span>
+    <span class="star filled">★</span>
+    <span class="star filled">★</span>
+    <span class="star half-filled">★</span>
+    <span class="star empty">★</span>
+    <span class="productCardSpan">(128 reviews)</span>
+  </div>
+
+  <!-- Interactive Rating Form -->
+  <div class="rating-interactive">
+    <span class="star" data-rating="1">★</span>
+    <span class="star" data-rating="2">★</span>
+    <span class="star" data-rating="3">★</span>
+    <span class="star" data-rating="4">★</span>
+    <span class="star" data-rating="5">★</span>
+  </div>
+
+  <!-- Average Rating Display -->
+  <div class="average-rating">
+    <div class="average-rating-large">
+      <div class="average-rating-number">4.5</div>
+      <div class="average-rating-stars">
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star half-filled">★</span>
+        <span class="star empty">★</span>
+      </div>
+      <div class="average-rating-total">128 reviews</div>
+    </div>
+  </div>
+*/

@@ -90,6 +90,45 @@
   background: rgba(86, 17, 16, 0.25);
 }
 
+.pay-tag.cod {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.tracking-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.tracking-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+}
+
+.tracking-status {
+  font-weight: 700;
+  color: var(--primary-main);
+}
+
+.tracking-note {
+  color: var(--text-primary);
+}
+
+.tracking-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tracking-empty {
+  color: var(--text-secondary);
+}
+
 
 @media (max-width: 768px) {
   .table-title {

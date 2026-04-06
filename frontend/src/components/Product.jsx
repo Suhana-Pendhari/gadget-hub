@@ -5,8 +5,13 @@ import Rating from './Rating';
 
 function Product({product}) {
     const [rating, setRating] = useState(0);
+    const originalPrice = Number(product?.price ?? 0);
+    const discountPercent = Number(product?.discountPercent ?? 0);
+    const discountedPrice = Math.round(originalPrice * (100 - discountPercent) / 100);
+    const showDiscount = discountPercent > 0;
+
     const handleRatingChange = (newRating)=>{
-        setRating(rating);
+        setRating(newRating);
         console.log(`Rating changed to: ${newRating}`);
     }
   return (
@@ -15,7 +20,17 @@ function Product({product}) {
             <img src={product.image[0].url} alt={product.name} className='product-image-card'/>
             <div className="product-details">
                 <h3 className="product-title">{product.name}</h3>
-                <p className="home-price"><strong>Price</strong>{product.price}/-</p>
+                <div className="home-price">
+                    {showDiscount ? (
+                        <>
+                            <span className="original-price">{originalPrice}/-</span>
+                            <span>{discountedPrice}/-</span>
+                            <span className="discount-badge">{discountPercent}% OFF</span>
+                        </>
+                    ) : (
+                        <span>{originalPrice}/-</span>
+                    )}
+                </div>
                 <div className="rating_container">
                     <Rating
                     value={product.ratings}

@@ -93,9 +93,9 @@
     width: 100%;
     max-width: 720px;
     height: 48px;
-    background: var(--bg-secondary);
+    background: var(--primary-main);
     color: var(--text-light);
-    border: none;
+    border: 1px solid var(--primary-main);
     border-radius: 8px;
     font-size: 16px;
     font-weight: 500;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../CartStyles/Payment.css';
 import PageTitle from '../components/PageTitle';
 import Navbar from '../components/Navbar';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { removeErrors } from '../features/products/productSlice';
 
 function Payment() {
+  const [paymentMode, setPaymentMode] = useState('online');
 
   const orderItem = JSON.parse(sessionStorage.getItem('orderItem'));
   const { user } = useSelector(state => state.user);
@@ -62,6 +63,15 @@ function Payment() {
       dispatch(removeErrors());
     }
   }
+
+  const handlePlaceOrder = () => {
+    if (paymentMode === 'cod') {
+      navigate('/paymentSuccess?method=cod&reference=COD');
+      return;
+    }
+    completePayment(orderItem.total);
+  };
+
   return (
     <>
       <PageTitle title="Payment Processing" />
@@ -69,7 +79,31 @@ function Payment() {
       <CheckoutPath activePath={2} />
       <div className="payment-container">
         <Link to='/order/confirm' className='payment-go-back'>Go Back</Link>
-        <button className="payment-btn" onClick={() => completePayment(orderItem.total)}>Pay ({orderItem.total})/-</button>
+        <div className="payment-mode-select">
+          <label>
+            <input
+              type="radio"
+              name="paymentMode"
+              value="online"
+              checked={paymentMode === 'online'}
+              onChange={(e) => setPaymentMode(e.target.value)}
+            />
+            Pay Online
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="paymentMode"
+              value="cod"
+              checked={paymentMode === 'cod'}
+              onChange={(e) => setPaymentMode(e.target.value)}
+            />
+            Cash on Delivery
+          </label>
+        </div>
+        <button className="payment-btn" onClick={handlePlaceOrder}>
+          {paymentMode === 'online' ? `Pay (${orderItem.total})/-` : 'Place Order (Cash on Delivery)'}
+        </button>
       </div>
       <Footer />
     </>

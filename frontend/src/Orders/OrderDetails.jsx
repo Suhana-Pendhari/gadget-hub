@@ -12,7 +12,7 @@ import Loader from '../components/Loader';
 
 function OrderDetails() {
     const { orderId } = useParams();
-    const { order, loadig, error } = useSelector(state => state.order);
+    const { order, loading, error } = useSelector(state => state.order);
     const dispatch = useDispatch();
     console.log(order);
 
@@ -33,18 +33,24 @@ function OrderDetails() {
         taxPrice,
         shippingPrice,
         itemPrice,
-        paidAt
+        paidAt,
+        estimatedDeliveryDate,
+        trackingTimeline = []
     } = order;
 
-    const paymentStatus = paymentInfo?.status === 'succeeded' ? 'Paid' : 'Not Paid';
+    const paymentStatus = paymentInfo?.status === 'succeeded'
+        ? 'Paid'
+        : paymentInfo?.status === 'pending'
+            ? 'Cash on Delivery'
+            : 'Not Paid';
     const finalOrderStatus = paymentStatus === 'Not Paid' ? 'Cancelled' : orderStatus;
     const orderStatusClass = finalOrderStatus === 'Delivered' ? 'status-tag delivered' : `status-tag ${finalOrderStatus.toLowerCase()}`;
-    const paymentStatusClass = `pay-tag ${paymentStatus === 'Paid' ? 'paid' : 'not-paid'}`
+    const paymentStatusClass = `pay-tag ${paymentStatus === 'Paid' ? 'paid' : paymentStatus === 'Cash on Delivery' ? 'cod' : 'not-paid'}`
     return (
         <>
             <PageTitle title={orderId} />
             <Navbar />
-            {loadig ? (<Loader />) : (<div className="order-box">
+            {loading ? (<Loader />) : (<div className="order-box">
                 {/* Order Items Table */}
                 <div className="table-block">
                     <h2 className="table-title">Order Items</h2>
@@ -111,6 +117,12 @@ function OrderDetails() {
                                 <th className="table-cell">Paid At</th>
                                 <td className="table-cell">{new Date(paidAt).toLocaleString()}</td>
                             </tr>)}
+                            {estimatedDeliveryDate && (
+                                <tr className="table-row">
+                                    <th className="table-cell">Estimated Delivery</th>
+                                    <td className="table-cell">{new Date(estimatedDeliveryDate).toDateString()}</td>
+                                </tr>
+                            )}
                             <tr className="table-row">
                                 <th className="table-cell">Items Price</th>
                                 <td className="table-cell">{itemPrice}/-</td>
@@ -129,6 +141,23 @@ function OrderDetails() {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div className="table-block">
+                    <h2 className="table-title">Tracking Timeline</h2>
+                    {trackingTimeline.length > 0 ? (
+                        <div className="tracking-timeline">
+                            {trackingTimeline.map((event, index) => (
+                                <div className="tracking-item" key={`${event.status}-${event.timestamp}-${index}`}>
+                                    <span className="tracking-status">{event.status}</span>
+                                    <span className="tracking-note">{event.note}</span>
+                                    <span className="tracking-time">{new Date(event.timestamp).toLocaleString()}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="tracking-empty">Tracking details will appear as your order progresses.</p>
+                    )}
                 </div>
             </div>)}
             <Footer />

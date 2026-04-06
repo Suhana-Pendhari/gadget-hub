@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import "../componentStyles/Navbar.css";
 import "../pageStyles/Search.css";
 import { useSelector } from 'react-redux';
+// import Logo from './Logo';
 
 
 function Navbar() {
@@ -16,6 +17,7 @@ function Navbar() {
     const [searchQuery, setSearchQuery] = useState("");
     const toggleSearch = ()=>setIsSearchOpen(!isSearchOpen);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const closeMenu = () => setIsMenuOpen(false);
     const {isAuthenticated} = useSelector(state=>state.user);
     const {cartItems} = useSelector(state=>state.cart);
     const navigate = useNavigate();
@@ -27,25 +29,30 @@ function Navbar() {
             navigate(`/products`);
         }
         setSearchQuery("");
+        closeMenu();
     }
 
   return (
     <nav className='navbar'>
         <div className="navbar-container">
+            <div className="navbar-hamburger left" onClick={toggleMenu}>
+                {isMenuOpen ? <CloseIcon className='icon'/> : <MenuIcon className='icon'/>}
+            </div>
+
             <div className="navbar-logo">
-                <Link to="/" onClick={()=>setIsMenuOpen(false)}>GadgetHub</Link>
+                <Link to="/" onClick={closeMenu}>GadgetHub</Link>
             </div>
 
             <div className={`navbar-links ${isMenuOpen? 'active': ""}`}>
                 <ul>
-                    <li><Link to="/" onClick={()=>setIsMenuOpen(false)}>Home</Link></li>
-                    <li><Link to="/products">Product</Link></li>
-                    <li><Link to="/products">About Us</Link></li>
-                    <li><Link to="/products">Contact Us</Link></li>
+                    <li><Link to="/" onClick={closeMenu}>Home</Link></li>
+                    <li><Link to="/products" onClick={closeMenu}>Product</Link></li>
+                    <li><Link to="/products" onClick={closeMenu}>About Us</Link></li>
+                    <li><Link to="/products" onClick={closeMenu}>Contact Us</Link></li>
                 </ul>
             </div>
 
-            <div className="navbar-icons">
+            <div className="navbar-search">
                 <div className="search-container">
                     <form className={`search-form ${isSearchOpen?'active':''}`} onSubmit={handleSearchSubmit}>
                         <input type="text"
@@ -59,23 +66,26 @@ function Navbar() {
                         </button>
                     </form>
                 </div>
-
-                <div className="cart-container">
-                    <Link to="/cart">
+                <div className="cart-container navbar-cart">
+                    <Link to="/cart" onClick={closeMenu}>
                         <ShoppingCartIcon className="icon"/>
                         <span className="cart-badge">{cartItems.length}</span>
                     </Link>
                 </div>
+            </div>
 
-                {!isAuthenticated && <Link to="/register" className='register-link'>
-                    <PersonAddIcon className='icon'/>
-                </Link>}
-
-                <div className="navbar-hamburger" onClick={toggleMenu}>
-                    {isMenuOpen? <CloseIcon className='icon'/> : <MenuIcon className='icon'/>}
-                </div>
+            <div className="navbar-icons">
+                {!isAuthenticated ? (
+                    <Link to="/register" className='register-link' onClick={closeMenu}>
+                        <PersonAddIcon className='icon'/>
+                    </Link>
+                ) : (
+                    <Link to="/profile" className='register-link' onClick={closeMenu}>
+                    </Link>
+                )}
             </div>
         </div>
+        {isMenuOpen && <div className="navbar-overlay" onClick={closeMenu}></div>}
     </nav>
   )
 }

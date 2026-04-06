@@ -40,6 +40,12 @@
     background-color: var(--bg-primary);
   }
   
+  /* Category column styling */
+  .product-table td:nth-child(6) {
+    color: #374151;
+    font-weight: 500;
+  }
+  
   .action-link {
     margin-right: 10px;
     text-decoration: none;

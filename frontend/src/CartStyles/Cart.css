@@ -119,14 +119,16 @@
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  border: 1px solid var(--primary-main);
+  background: var(--primary-main);
+  color: var(--text-light);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .quantity-button:hover {
-  color:var(--text-primary)
+  background: var(--primary-dark);
+  color: var(--text-light);
 }
 
 .quantity-input {

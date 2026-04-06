@@ -34,7 +34,7 @@ function UpdateOrder() {
         totalPrice
     } = order;
 
-    const paymentStatus = paymentInfo.status === 'succeeded' ? 'Paid' : 'Not Paid';
+    const paymentStatus = paymentInfo.status === 'succeeded' ? 'Paid' : paymentInfo.status === 'pending' ? 'Cash on Delivery' : 'Not Paid';
     const finalOrderStatus = paymentStatus === 'Not Paid' ? 'Cancelled' : orderStatus;
 
     const handleStatusUpdate = () => {

@@ -102,17 +102,17 @@
   
   .profile-buttons a {
     padding: 0.875rem 2rem;
-    background-color: var(--border-color);
+    background-color: var(--primary-main);
     color: var(--text-light);
     text-decoration: none;
     border-radius: 10px;
     transition: all 0.3s ease;
     font-weight: 500;
-    box-shadow: 0 4px 12px var(--bg-secondary)
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
   }
   
   .profile-buttons a:hover {
-    background-color: var(--bg-secondary);
+    background-color: var(--primary-dark);
     transform: translateY(-2px);
   }
   

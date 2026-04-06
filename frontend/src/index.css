@@ -1,25 +1,59 @@
 :root {
-    /* Theme palette derived from the provided "Gadget Hub" header image */
-    --primary-main: #f9e442;   /* gold */
-    --primary-dark: #561110;   /* deep maroon */
-    --primary-light: #fbec61;  /* lighter gold */
+    --primary-main: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
 
-    --bg-primary: #1e100d;     /* deep maroon background */
-    --bg-secondary: #2c110f;   /* surface background */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
 
-    --text-primary: #f8f8f8;    /* near-white */
-    --text-secondary: #d9ba41;  /* muted gold */
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
     --text-light: #ffffff;
+    --text-dark: #111827;
 
-    --text-dark: #1e100d; /* used in some existing styles */
+    --border-color: #e5e7eb;
 
-    --border-color: #814325; /* warm border */
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 10px 20px rgba(15, 23, 42, 0.08);
 
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    --gadget-gold: #f59e0b;
+    --gadget-orange: #f97316;
+    --gadget-red: #ef4444;
+    --gadget-dark: #0f172a;
+    --gadget-charcoal: #334155;
+    --gadget-deep-brown: #1f2937;
+    --gadget-crimson: #dc2626;
 }
 *{
     margin:0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+button,
+button[type="submit"],
+button[type="button"],
+button[type="reset"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+    background-color: var(--primary-main) !important;
+    color: var(--text-light) !important;
+    border: 1px solid var(--primary-main) !important;
+    transition: background-color 0.2s ease !important;
+}
+
+button:hover,
+button[type="submit"]:hover,
+button[type="button"]:hover,
+button[type="reset"]:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover {
+    background-color: var(--primary-dark) !important;
 }

@@ -5,7 +5,7 @@
    }
    
    .shipping-form-header {
-    color: var(--bg-secondary);
+    color: var(--text-primary);
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 40px;
@@ -37,7 +37,7 @@
    }
    
    .shipping-form-group label {
-    color: var(--primary-dark);
+    color: var(--text-primary);
     font-size: 15px;
     font-weight: 500;
    }
@@ -48,7 +48,7 @@
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: transparent;
-    color: var(--bg-secondary);
+    color: var(--text-primary);
     font-size: 15px;
     transition: all 0.2s ease;
    }
@@ -61,8 +61,8 @@
    }
    
    .shipping-form-group input::placeholder {
-    color: var( --bg-secondary);
-    opacity: 0.7;
+    color: var(--text-primary);
+    opacity: 0.5;
    }
    
    .shipping-submit-btn {

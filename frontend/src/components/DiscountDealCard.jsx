@@ -38,6 +38,13 @@ function DiscountDealCard({ product }) {
           <div className="deal-rating-row">
             <Rating value={product.ratings} disabled={true} />
           </div>
+
+          <div className="deal-footer">
+            <span className="deal-savings-text">
+              {showDiscount ? `Save ${Math.round(originalPrice - finalPrice)} /-` : 'Best Price'}
+            </span>
+            <span className="deal-view-button">View Details</span>
+          </div>
         </div>
       </div>
     </Link>

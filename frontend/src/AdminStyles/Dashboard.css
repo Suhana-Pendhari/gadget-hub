@@ -7,14 +7,15 @@
   
   .sidebar {
     width: 270px;
-    background-color: var(--bg-secondary);
-    color: var(--text-light);
+    background-color: #f4f5f7;
+    color: #0f172a;
     padding: 20px;
-    padding-bottom:50px;
+    padding-bottom: 50px;
     position: fixed;
-    top: 60px; 
-    height: calc(100vh - 5px); 
-    overflow-y: auto; 
+    top: 60px;
+    height: calc(100vh - 5px);
+    overflow-y: auto;
+    border-right: 1px solid #d2d6dc;
   }
   
   .logo {
@@ -47,7 +48,7 @@
     margin-bottom:0;
   }
   .nav-section h3 {
-    color: rgba(255,255,255,0.7);
+    color: #1f2937;
     font-size: 0.85rem;
     margin-bottom: 5px;
     text-transform: uppercase;
@@ -55,7 +56,7 @@
   }
   
   .nav-section a {
-    color: var(--text-light);
+    color: #111827;
     text-decoration: none;
     padding: 12px 15px;
     border-radius: 8px;
@@ -64,6 +65,8 @@
     align-items: center;
     gap: 12px;
     font-size: 0.95rem;
+    background: #f8f9fb;
+    border: 1px solid #d1d5db;
   }
   
   .nav-icon {
@@ -71,9 +74,9 @@
   }
   
   .nav-section a:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: #e2e8f0;
     transform: translateX(5px);
-      }
+  }
   
   .main-content {
     flex: 1;
@@ -97,19 +100,21 @@
   }
   
   .stat-box {
-    background-color: var(--bg-primary);
+    background-color: #f1f5f9;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 10px 20px rgba(15,23,42,0.06);
+    transition: transform 0.3s ease, background-color 0.3s ease;
   }
   
   .stat-box:hover {
     transform: translateY(-5px);
+    background-color: #e2e8f0;
   }
   
   .stat-box .icon {
-    color: var(--primary-main);
+    color: #3b82f6;
     margin-bottom: 15px;
     font-size: 32px;
   }
@@ -135,12 +140,12 @@
   }
   
   .social-box {
-    background-color: var(--bg-primary);
+    background-color: #f1f5f9;
     padding: 30px;
     border-radius: 12px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+    box-shadow: 0 10px 20px rgba(15,23,42,0.06);
+    transition: transform 0.3s ease, background-color 0.3s ease;
   }
   
   .social-box:hover {
@@ -152,27 +157,21 @@
     margin-bottom: 15px;
   }
   
-  .social-box.instagram .MuiSvgIcon-root {
-    color: var(--primary-main);
-  }
-  
-  .social-box.linkedin .MuiSvgIcon-root {
-    color: var(--primary-main);
-  }
-  
+  .social-box.instagram .MuiSvgIcon-root,
+  .social-box.linkedin .MuiSvgIcon-root,
   .social-box.youtube .MuiSvgIcon-root {
     color: var(--primary-main);
   }
   
   .social-box h3 {
     margin: 15px 0;
-    color: var(--text-primary);
+    color: #111827;
     font-size: 1.2rem;
     font-weight: 600;
   }
   
   .social-box p {
-    color: var(--text-secondary);
+    color: #475569;
     margin: 8px 0;
     font-size: 1rem;
   }

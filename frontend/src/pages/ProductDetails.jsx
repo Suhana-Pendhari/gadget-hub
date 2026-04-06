@@ -10,6 +10,7 @@ import { createReview, getProductDetails, removeErrors, removeSuccess } from '..
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { addItemsToCart, removeMessage } from '../features/cart/cartSlice';
+import { getAllMyOrders } from '../features/order/orderSlice';
 
 
 function ProductDetails() {
@@ -22,6 +23,9 @@ function ProductDetails() {
         setUserRating(newRating);
     }
     const { loading, error, product, reviewSuccess, reviewLoading } = useSelector((state) => state.product);
+    const { isAuthenticated } = useSelector((state) => state.user);
+    const { orders = [] } = useSelector((state) => state.order);
+    const errorMessage = typeof error === 'string' ? error : error?.message;
     const { loading: cartLoading, error: cartError, success, message, cartItems } = useSelector((state) => state.cart);
     console.log(cartItems);
 
@@ -32,19 +36,22 @@ function ProductDetails() {
         if (id) {
             dispatch(getProductDetails(id));
         }
+        if (isAuthenticated) {
+            dispatch(getAllMyOrders());
+        }
         return () => {
             dispatch(removeErrors())
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, isAuthenticated]);
     useEffect(() => {
-        if (error) {
-            toast.error(error.message, { position: 'top-center', autoClose: 3000 });
+        if (errorMessage) {
+            toast.error(errorMessage, { position: 'top-center', autoClose: 3000 });
             dispatch(removeErrors())
         }
         if (cartError) {
             toast.error(cartError, { position: 'top-center', autoClose: 3000 });
         }
-    }, [dispatch, error, cartError]);
+    }, [dispatch, errorMessage, cartError]);
 
     useEffect(() => {
         if (success) {
@@ -102,6 +109,11 @@ function ProductDetails() {
             setSelectedImage(product.image[0].url);
         }
     }, [product])
+
+    const canReview = isAuthenticated && orders.some((order) =>
+        order.orderStatus === 'Delivered' &&
+        order.orderItems?.some((item) => String(item.product) === String(id))
+    );
     if (loading) {
         return (
             <>
@@ -139,7 +151,15 @@ function ProductDetails() {
                     <div className="product-info">
                         <h2>{product.name}</h2>
                         <p className="product-description">{product.description}</p>
-                        <p className="product-price">Price : {product.price}/-</p>
+                        {product.discountPercent > 0 ? (
+                          <div className="product-price-block">
+                            <p className="product-price product-original-price">Price : {product.price}/-</p>
+                            <p className="product-price product-discounted-price">Discounted : {Math.round(product.price * (100 - product.discountPercent) / 100)}/-</p>
+                            <span className="product-discount-label">{product.discountPercent}% OFF</span>
+                          </div>
+                        ) : (
+                          <p className="product-price">Price : {product.price}/-</p>
+                        )}
                         <div className="product-rating">
                             <Rating
                                 value={product.ratings}
@@ -162,15 +182,29 @@ function ProductDetails() {
                         </>)
                         }
 
-                        <form className="review-form" onSubmit={handleReviewSubmit}>
+                        <form className={`review-form ${canReview ? '' : 'review-form-disabled'}`} onSubmit={handleReviewSubmit}>
                             <h3>Write a Review</h3>
                             <Rating
                                 value={userRating}
-                                disabled={false}
+                                disabled={!canReview}
                                 onRatingChange={handleRatingChange}
                             />
-                            <textarea placeholder='Write your review here..' className='review-input' value={comment} onChange={(e) => setComment(e.target.value)} required></textarea>
-                            <button className="submit-review-btn" disabled={reviewLoading}>{reviewLoading ? 'Submitting...' : 'Submit Review'}</button>
+                            <textarea
+                                placeholder={canReview ? 'Write your review here..' : 'Review will unlock after delivery of this product.'}
+                                className='review-input'
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                required
+                                disabled={!canReview}
+                            ></textarea>
+                            {!canReview && (
+                                <p className="review-locked-note">
+                                    Review is locked until this product is delivered in your order history.
+                                </p>
+                            )}
+                            <button className="submit-review-btn" disabled={reviewLoading || !canReview}>
+                                {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                            </button>
                         </form>
                     </div>
                 </div>

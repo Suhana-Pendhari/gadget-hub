@@ -1,4 +1,4 @@
-
+/* 
 .loader-container {
     display: flex;
     justify-content: center;
@@ -25,3 +25,417 @@
     }
   }
   
+   */
+
+
+/* Loader CSS - Gadget Hub Theme */
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+  background: transparent;
+}
+
+/* Main Loader - Using your color palette */
+.loader {
+  width: 80px;
+  height: 80px;
+  border: 4px solid rgba(44, 45, 52, 0.1); /* Using gadget-dark with opacity */
+  border-top: 4px solid var(--gadget-gold, #EFD510);
+  border-right: 4px solid var(--gadget-orange, #F2910A);
+  border-bottom: 4px solid var(--gadget-red, #E94822);
+  border-left: 4px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 10px rgba(239, 213, 16, 0.1);
+}
+
+/* Alternative Loader Styles */
+
+/* Pulse Loader */
+.loader-pulse {
+  width: 80px;
+  height: 80px;
+  background: var(--gadget-gold, #EFD510);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+/* Dots Loader */
+.loader-dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-dots div {
+  width: 16px;
+  height: 16px;
+  background: var(--gadget-gold, #EFD510);
+  border-radius: 50%;
+  animation: dots 1.4s ease-in-out infinite;
+}
+
+.loader-dots div:nth-child(1) {
+  animation-delay: -0.32s;
+  background: var(--gadget-gold, #EFD510);
+}
+
+.loader-dots div:nth-child(2) {
+  animation-delay: -0.16s;
+  background: var(--gadget-orange, #F2910A);
+}
+
+.loader-dots div:nth-child(3) {
+  background: var(--gadget-red, #E94822);
+}
+
+/* Dual Ring Loader */
+.loader-dual-ring {
+  width: 80px;
+  height: 80px;
+  border: 4px solid transparent;
+  border-top: 4px solid var(--gadget-gold, #EFD510);
+  border-bottom: 4px solid var(--gadget-red, #E94822);
+  border-radius: 50%;
+  position: relative;
+  animation: spin 1.5s linear infinite;
+}
+
+.loader-dual-ring::before,
+.loader-dual-ring::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border: 4px solid transparent;
+  border-radius: 50%;
+}
+
+.loader-dual-ring::before {
+  border-top: 4px solid var(--gadget-orange, #F2910A);
+  border-bottom: 4px solid var(--gadget-orange, #F2910A);
+  animation: spin 1s linear reverse infinite;
+}
+
+.loader-dual-ring::after {
+  width: 40px;
+  height: 40px;
+  border-left: 4px solid var(--gadget-gold, #EFD510);
+  border-right: 4px solid var(--gadget-red, #E94822);
+  animation: spin 0.8s linear infinite;
+}
+
+/* Progress Bar Loader */
+.loader-progress {
+  width: 200px;
+  height: 4px;
+  background: rgba(44, 45, 52, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, 
+    var(--gadget-gold, #EFD510),
+    var(--gadget-orange, #F2910A),
+    var(--gadget-red, #E94822)
+  );
+  animation: progress 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* Gadget-themed Loader */
+.loader-gadget {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.loader-gadget span {
+  width: 12px;
+  height: 12px;
+  background: var(--gadget-gold, #EFD510);
+  border-radius: 2px;
+  animation: gadgetPulse 1s ease-in-out infinite;
+}
+
+.loader-gadget span:nth-child(2) {
+  background: var(--gadget-orange, #F2910A);
+  animation-delay: 0.2s;
+}
+
+.loader-gadget span:nth-child(3) {
+  background: var(--gadget-red, #E94822);
+  animation-delay: 0.4s;
+}
+
+.loader-gadget span:nth-child(4) {
+  background: var(--gadget-crimson, #C3110C);
+  animation-delay: 0.6s;
+}
+
+.loader-gadget span:nth-child(5) {
+  background: var(--gadget-maroon, #740A03);
+  animation-delay: 0.8s;
+}
+
+/* Skeleton Loader for Cards */
+.skeleton-loader {
+  width: 100%;
+  max-width: 300px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, 
+    rgba(44, 45, 52, 0.05) 25%,
+    rgba(239, 213, 16, 0.1) 50%,
+    rgba(44, 45, 52, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.skeleton-line {
+  height: 12px;
+  margin: 8px 0;
+  background: linear-gradient(90deg, 
+    rgba(44, 45, 52, 0.05) 25%,
+    rgba(239, 213, 16, 0.1) 50%,
+    rgba(44, 45, 52, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+.skeleton-line.medium {
+  width: 80%;
+}
+
+/* Full Page Loader */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.page-loader .loader-content {
+  text-align: center;
+}
+
+.page-loader .loader-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, 
+    var(--gadget-gold), 
+    var(--gadget-orange), 
+    var(--gadget-red)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+    background: var(--gadget-gold, #EFD510);
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+    background: var(--gadget-red, #E94822);
+  }
+}
+
+@keyframes dots {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes progress {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes gadgetPulse {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(2);
+    opacity: 1;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive Loaders */
+@media (max-width: 768px) {
+  .loader,
+  .loader-pulse,
+  .loader-dual-ring {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .loader-dual-ring::before {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .loader-dual-ring::after {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .loader-dots div {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .loader-progress {
+    width: 150px;
+  }
+  
+  .page-loader .loader-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader,
+  .loader-pulse,
+  .loader-dual-ring {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .loader-dual-ring::before {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .loader-dual-ring::after {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .loader-gadget span {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Usage Examples in Comments */
+/*
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
+  
+  <div class="loader-container">
+    <div class="loader-pulse"></div>
+  </div>
+  
+  <div class="loader-container">
+    <div class="loader-dots">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  
+  <div class="loader-container">
+    <div class="loader-gadget">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+  
+  <div class="page-loader">
+    <div class="loader-content">
+      <div class="loader"></div>
+      <div class="loader-text">Loading Gadgets...</div>
+    </div>
+  </div>
+*/

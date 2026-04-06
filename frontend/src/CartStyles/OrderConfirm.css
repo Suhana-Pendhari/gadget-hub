@@ -67,15 +67,15 @@
     font-size: 1rem;
     font-weight: bold;
     color: var(--text-light);
-    background-color: var(--bg-primary);
-    border: none;
+    background-color: var(--primary-main);
+    border: 1px solid var(--primary-main);
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .proceed-button:hover {
-    background-color: var(--bg-secondary);
+    background-color: var(--primary-dark);
 }
 
 /* Responsive Design */

@@ -14,8 +14,9 @@ import { clearCart } from '../features/cart/cartSlice.js';
 function PaymentSuccess() {
     const [searchParams] = useSearchParams();
     const reference = searchParams.get('reference');
+    const method = searchParams.get('method') || 'online';
     const { cartItems, shippingInfo } = useSelector(state => state.cart);
-    const { loading, success, error } = useSelector(state => state.order);
+    const { loading, success, error, order } = useSelector(state => state.order);
 
     const dispatch = useDispatch();
 
@@ -41,8 +42,8 @@ function PaymentSuccess() {
                         product: item.product
                     })),
                     paymentInfo: {
-                        id: reference,
-                        status: 'succeeded'
+                        id: method === 'cod' ? 'COD' : reference,
+                        status: method === 'cod' ? 'pending' : 'succeeded'
                     },
                     itemPrice: orderItem.subtotal,
                     taxPrice: orderItem.tax,
@@ -85,7 +86,16 @@ function PaymentSuccess() {
                             <div className="checkmark"></div>
                         </div>
                         <h1>Order Confirmed!</h1>
-                        <p>Your payment was successful. Reference ID <strong>{reference}</strong></p>
+                        {method === 'cod' ? (
+                            <p>Cash on Delivery selected. Please keep exact cash ready at delivery.</p>
+                        ) : (
+                            <p>Your payment was successful. Reference ID <strong>{reference}</strong></p>
+                        )}
+                        {order?.estimatedDeliveryDate ? (
+                            <p>Expected delivery by <strong>{new Date(order.estimatedDeliveryDate).toDateString()}</strong>.</p>
+                        ) : (
+                            <p>Expected delivery within <strong>7 days</strong>.</p>
+                        )}
                         <Link className='explore-btn' to='/orders/user'>View Orders</Link>
                     </div>
                 </div>
