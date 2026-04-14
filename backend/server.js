@@ -1,6 +1,5 @@
 import app from './app.js';
 import { connectMongoDatabase } from './config/db.js';
-import { getRazorpayInstance } from './config/razorpay.js';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 
@@ -15,14 +14,12 @@ cloudinary.config({
     secure: false
 })
 
-// Handle uncaught exception errors
 process.on('uncaughtException', (err) => {
+    console.error(`Uncaught exception: ${err.message}`);
     process.exit(1);
 })
 
 const port = process.env.PORT || 3000;
-
-export const instance = getRazorpayInstance();
 
 let server;
 
@@ -40,6 +37,7 @@ startServer();
 
 
 process.on('unhandledRejection', (err) => {
+    console.error(`Unhandled rejection: ${err.message}`);
     if (server) {
         server.close(() => {
             process.exit(1);
