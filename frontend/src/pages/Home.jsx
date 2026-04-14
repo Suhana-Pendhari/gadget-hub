@@ -16,11 +16,11 @@ function Home() {
     const { loading, error, products, productCount, discountedProducts, discountedLoading, discountedLoaded } = useSelector((state) => state.product);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getProduct({ keyword: "", fetchAll: true }));
+        dispatch(getProduct({ topReviews: true, limit: 5 }));
     }, [dispatch])
     useEffect(() => {
         // Default: show all discounted products in Hot Deals
-        dispatch(getDiscountedProducts({ minDiscount: 1, limit: 50 }));
+        dispatch(getDiscountedProducts({ minDiscount: 1, limit: 12 }));
     }, [dispatch]);
     useEffect(()=>{
         if(error){
@@ -29,13 +29,7 @@ function Home() {
         }
     }, [dispatch, error])
 
-    const trendingProducts = [...(products || [])]
-        .sort((a, b) => {
-            const reviewDiff = (b?.numOfReviews || 0) - (a?.numOfReviews || 0);
-            if (reviewDiff !== 0) return reviewDiff;
-            return (b?.ratings || 0) - (a?.ratings || 0);
-        })
-        .slice(0, 5);
+    const trendingProducts = products || [];
 
     return (
         <>

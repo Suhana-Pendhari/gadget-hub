@@ -28,7 +28,7 @@ function Products() {
 
 
     useEffect(() => {
-        dispatch(getProduct({ keyword, category, fetchAll: true }));
+        dispatch(getProduct({ keyword, category, limit: 24, page: 1 }));
     }, [dispatch, keyword, category])
     useEffect(() => {
         if (error) {

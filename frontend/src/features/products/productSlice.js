@@ -12,66 +12,28 @@ const dedupeProductsById = (products = []) => {
     });
 };
 
-export const getProduct = createAsyncThunk('product/getProduct', async({keyword, category, topReviews=false, limit, fetchAll=false}, {rejectWithValue})=>{
+export const getProduct = createAsyncThunk('product/getProduct', async({keyword, category, topReviews=false, limit, page=1}, {rejectWithValue})=>{
     try {
-        const queryParts = [];
+        const params = new URLSearchParams();
         if(category){
-            queryParts.push(`category=${encodeURIComponent(category)}`);
+            params.set('category', category);
         }
         if(keyword){
-            queryParts.push(`keyword=${encodeURIComponent(keyword)}`);
+            params.set('keyword', keyword);
         }
         if(topReviews){
-            queryParts.push(`topReviews=true`);
+            params.set('topReviews', 'true');
         }
         if(limit){
-            queryParts.push(`limit=${encodeURIComponent(limit)}`);
+            params.set('limit', String(limit));
         }
+        params.set('page', String(page));
 
-        const queryPrefix = queryParts.length > 0 ? `${queryParts.join('&')}&` : '';
-        const firstLink = `/api/v1/products?${queryPrefix}page=1`;
-        const {data: firstPageData} = await axios.get(firstLink);
-
-        if (!fetchAll) {
-            return {
-                ...firstPageData,
-                products: dedupeProductsById(firstPageData.products || [])
-            };
-        }
-
-        const allProducts = [...(firstPageData.products || [])];
-        const totalPages = Number(firstPageData?.totalPages) || 0;
-
-        if (totalPages > 1) {
-            for (let page = 2; page <= totalPages; page++) {
-                const pageLink = `/api/v1/products?${queryPrefix}page=${page}`;
-                const { data: pageData } = await axios.get(pageLink);
-                allProducts.push(...(pageData.products || []));
-            }
-        } else {
-            // Backward-compatible fallback: keep fetching until next page is empty/error.
-            for (let page = 2; page <= 100; page++) {
-                try {
-                    const pageLink = `/api/v1/products?${queryPrefix}page=${page}`;
-                    const { data: pageData } = await axios.get(pageLink);
-                    const pageProducts = pageData?.products || [];
-                    if (pageProducts.length === 0) break;
-                    allProducts.push(...pageProducts);
-                } catch (_) {
-                    break;
-                }
-            }
-        }
-
-        const uniqueProducts = dedupeProductsById(allProducts);
-
+        const {data} = await axios.get(`/api/v1/products?${params.toString()}`);
+        const uniqueProducts = dedupeProductsById(data.products || []);
         return {
-            ...firstPageData,
+            ...data,
             products: uniqueProducts,
-            productCount: uniqueProducts.length,
-            resultsPerPage: uniqueProducts.length,
-            totalPages: 1,
-            currentPage: 1
         };
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');

@@ -55,7 +55,7 @@ function AboutUs() {
                             </div>
                             <div className="shop-image">
                                 <div className="image-placeholder">
-                                    <p>Shop Front Image</p>
+                                    <img src="/images/store-image.jpeg" alt="Gadget Hub shop" />
                                 </div>
                             </div>
                         </div>

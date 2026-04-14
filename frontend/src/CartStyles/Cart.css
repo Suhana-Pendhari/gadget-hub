@@ -857,7 +857,7 @@
 .checkout-btn {
   transition: all 0.2s ease-in-out;
 }
-/* .cart-page {
+.cart-page {
   max-width: 1200px;
   margin: 5.2rem auto 1.25rem;
   padding: 0 1rem;
@@ -1369,7 +1369,7 @@
     margin: 0.7rem 0 0;
     display: block;
   }
-} */
+}
 
 
 

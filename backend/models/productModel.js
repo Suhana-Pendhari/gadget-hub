@@ -96,4 +96,9 @@ const productSchema = new mongoose.Schema({
     }
 })
 
+productSchema.index({ createdAt: -1 });
+productSchema.index({ category: 1, createdAt: -1 });
+productSchema.index({ numOfReviews: -1, ratings: -1 });
+productSchema.index({ discountPercent: -1, stock: 1, createdAt: -1 });
+
 export default mongoose.model("Product", productSchema);

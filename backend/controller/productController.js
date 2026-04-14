@@ -50,10 +50,14 @@ export const createProducts = handleAsyncError(async (req, res, next) => {
 
 // 2) Get all products
 export const getAllProducts = handleAsyncError(async (req, res, next) => {
+    const summarySelect = "name price discountPercent ratings image category stock numOfReviews createdAt";
+
     if (req.query.topReviews === 'true') {
         const limit = Number(req.query.limit) || 4;
         const products = await Product.find()
+            .select(summarySelect)
             .sort({ numOfReviews: -1, ratings: -1, createdAt: -1 })
+            .lean()
             .limit(limit);
 
         return res.status(200).json({
@@ -66,9 +70,19 @@ export const getAllProducts = handleAsyncError(async (req, res, next) => {
         });
     }
 
-    const apiFeatures = new APIFunctionality(Product.find(), req.query).search().filter();
-    const products = await apiFeatures.query;
-    const productCount = products.length;
+    const currentPage = Number(req.query.page) || 1;
+    const resultPerPage = Number(req.query.limit) || 24;
+
+    const apiFeatures = new APIFunctionality(
+        Product.find().select(summarySelect).sort({ createdAt: -1 }),
+        req.query
+    ).search().filter();
+
+    const filteredProducts = await apiFeatures.query.clone().lean();
+    const productCount = filteredProducts.length;
+    apiFeatures.pagination(resultPerPage);
+    const products = await apiFeatures.query.lean();
+    const totalPages = Math.ceil(productCount / resultPerPage);
 
     if (!products || products.length === 0) {
         return next(new HandleError("No Product Found!"), 404);
@@ -78,9 +92,9 @@ export const getAllProducts = handleAsyncError(async (req, res, next) => {
         success: true,
         products,
         productCount,
-        resultPerPage: productCount,
-        totalPages: 1,
-        currentPage: 1
+        resultPerPage,
+        totalPages,
+        currentPage
     })
 })
 
@@ -187,7 +201,9 @@ export const getDiscountedProducts = handleAsyncError(async (req, res, next) => 
         discountPercent: { $gte: minDiscount },
         stock: { $gt: 0 }
     })
+        .select("name price discountPercent ratings image category stock numOfReviews createdAt")
         .sort({ discountPercent: -1, createdAt: -1 })
+        .lean()
         .limit(limit);
 
     res.status(200).json({
