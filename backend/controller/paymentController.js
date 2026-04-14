@@ -1,5 +1,5 @@
 import handleAsyncError from "../middleware/handleAsyncError.js";
-import { instance } from "../server.js";
+import razorpayInstance from "../config/razorpay.js";
 import crypto from 'crypto';
 
 export const processPayment = handleAsyncError(async (req, res) => {
@@ -7,7 +7,7 @@ export const processPayment = handleAsyncError(async (req, res) => {
         amount: Number(req.body.amount * 100),
         currency: 'INR'
     }
-    const order = await instance.orders.create(options);
+    const order = await razorpayInstance.orders.create(options);
     res.status(200).json({
         success: true,
         order
