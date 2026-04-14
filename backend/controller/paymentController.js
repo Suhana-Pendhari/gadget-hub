@@ -1,8 +1,9 @@
 import handleAsyncError from "../middleware/handleAsyncError.js";
-import razorpayInstance from "../config/razorpay.js";
+import { getRazorpayInstance } from "../config/razorpay.js";
 import crypto from 'crypto';
 
 export const processPayment = handleAsyncError(async (req, res) => {
+    const razorpayInstance = getRazorpayInstance();
     const options = {
         amount: Number(req.body.amount * 100),
         currency: 'INR'

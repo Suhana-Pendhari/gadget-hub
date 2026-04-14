@@ -1,6 +1,6 @@
 import app from './app.js';
 import { connectMongoDatabase } from './config/db.js';
-import razorpayInstance from './config/razorpay.js';
+import { getRazorpayInstance } from './config/razorpay.js';
 import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
@@ -17,7 +17,7 @@ process.on('uncaughtException', (err) => {
 
 const port = process.env.PORT || 3000;
 
-export const instance = razorpayInstance;
+export const instance = getRazorpayInstance();
 
 let server;
 

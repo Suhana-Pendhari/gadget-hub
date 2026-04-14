@@ -1,8 +1,22 @@
 import Razorpay from 'razorpay';
 
-const razorpayInstance = new Razorpay({
-    key_id: process.env.RAZORPAY_API_KEY,
-    key_secret: process.env.RAZORPAY_API_SECRET,
-});
+let razorpayInstance = null;
 
-export default razorpayInstance;
+export const getRazorpayInstance = () => {
+    if (razorpayInstance) {
+        return razorpayInstance;
+    }
+
+    if (!process.env.RAZORPAY_API_KEY || !process.env.RAZORPAY_API_SECRET) {
+        throw new Error('Razorpay credentials are missing');
+    }
+
+    razorpayInstance = new Razorpay({
+        key_id: process.env.RAZORPAY_API_KEY,
+        key_secret: process.env.RAZORPAY_API_SECRET,
+    });
+
+    return razorpayInstance;
+};
+
+export default getRazorpayInstance;
