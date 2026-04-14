@@ -19,8 +19,6 @@ cloudinary.config({
 
 // Handle uncaught exception errors
 process.on('uncaughtException', (err) => {
-    console.log(`Error: ${err.message}`);
-    console.log(`Server is shutting down due to uncaught exception errors`);
     process.exit(1);
 })
 
@@ -31,14 +29,10 @@ export const instance = new Razorpay({
     key_secret: process.env.RAZORPAY_API_SECRET,
 });
 
-const server = app.listen(port, () => {
-    console.log(`Server is working on http://localhost:${port}`);
-})
+const server = app.listen(port, () => {})
 
 
 process.on('unhandledRejection', (err) => {
-    console.log(`Error: ${err.message}`);
-    console.log(`Server is shutting down, due to unhandled promise rejection`);
     server.close(() => {
         process.exit(1);
     })

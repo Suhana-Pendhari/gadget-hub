@@ -79,7 +79,6 @@ export const requestPasswordReset = handleAsyncError(async (req, res, next) => {
         resetToken = user.generatePasswordResetToken();
         await user.save({ validateBeforeSave: false });
     } catch (error) {
-        console.log(error);
         return next(new HandleError("Could not save reset token, please try again later", 500));
     }
     const resetPasswordURL = `${req.protocol}://${req.get('host')}/reset/${resetToken}`;
@@ -97,7 +96,6 @@ export const requestPasswordReset = handleAsyncError(async (req, res, next) => {
             message: `Email is sent to ${user.email} successfully!`
         })
     } catch (error) {
-        // console.error("Email send error:", error);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
         await user.save({ validateBeforeSave: false });
@@ -107,7 +105,6 @@ export const requestPasswordReset = handleAsyncError(async (req, res, next) => {
 
 // Reset password
 export const resetPassword = handleAsyncError(async (req, res, next) => {
-    // console.log(req.params.token);
     const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest("hex");
     const user = await User.findOne({
         resetPasswordToken,

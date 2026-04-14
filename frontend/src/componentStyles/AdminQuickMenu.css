@@ -1,0 +1,99 @@
+.admin-quick-toggle,
+.admin-quick-overlay,
+.admin-quick-drawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.mobile-navbar-menu-open .admin-quick-toggle,
+  body.mobile-navbar-menu-open .admin-quick-overlay,
+  body.mobile-navbar-menu-open .admin-quick-drawer {
+    display: none !important;
+  }
+
+  .admin-quick-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    position: fixed;
+    top: 92px;
+    left: 10px;
+    z-index: 999;
+    border: 1px solid var(--primary-main);
+    border-radius: 8px;
+    padding: 0.34rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .admin-quick-toggle.hidden {
+    display: none;
+  }
+
+  .admin-quick-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 996;
+  }
+
+  .admin-quick-drawer {
+    display: block;
+    position: fixed;
+    top: 96px;
+    left: 0;
+    width: 76%;
+    max-width: 290px;
+    height: 66vh;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 12px 12px;
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    z-index: 997;
+    overflow: hidden;
+  }
+
+  .admin-quick-drawer.open {
+    transform: translateX(0);
+  }
+
+  .admin-quick-close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .admin-quick-close .MuiSvgIcon-root {
+    font-size: 1.35rem;
+  }
+
+  .admin-quick-drawer h3 {
+    margin: 6px 0 12px;
+    color: var(--text-primary);
+  }
+
+  .admin-quick-drawer nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .admin-quick-drawer a {
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: var(--bg-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+}

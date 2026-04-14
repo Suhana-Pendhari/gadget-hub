@@ -8,7 +8,6 @@ import Register from "./User/Register.jsx";
 import Login from "./User/Login.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./features/user/userSlice.js";
-import UserDashboard from "./User/UserDashboard.jsx";
 import Profile from "./User/Profile.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import UpdateProfile from "./User/UpdateProfile.jsx";
@@ -31,6 +30,10 @@ import UpdateRole from "./Admin/UpdateRole.jsx";
 import OrdersList from "./Admin/OrdersList.jsx";
 import UpdateOrder from "./Admin/UpdateOrder.jsx";
 import ReviewsList from "./Admin/ReviewsList.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
+import Messages from "./Admin/Messages.jsx";
+import MobileBottomNav from "./components/MobileBottomNav.jsx";
 
 function App() {
   const { isAuthenticated, user } = useSelector(state => state.user);
@@ -40,12 +43,12 @@ function App() {
       dispatch(loadUser());
     }
   }, [dispatch])
-  console.log(isAuthenticated, user);
-
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
@@ -73,8 +76,9 @@ function App() {
         <Route path="/admin/orders" element={<ProtectedRoute element={<OrdersList />} adminOnly={true} />} />
         <Route path="/admin/order/:orderId" element={<ProtectedRoute element={<UpdateOrder />} adminOnly={true} />} />
         <Route path="/admin/reviews" element={<ProtectedRoute element={<ReviewsList />} adminOnly={true} />} />
+        <Route path="/admin/messages" element={<ProtectedRoute element={<Messages />} adminOnly={true} />} />
       </Routes>
-      {isAuthenticated && <UserDashboard user={user} />}
+      <MobileBottomNav />
     </Router>
   )
 }

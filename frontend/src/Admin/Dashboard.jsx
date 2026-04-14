@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../AdminStyles/Dashboard.css';
 import {
     AddBox,
@@ -10,10 +10,13 @@ import {
     ShoppingCart,
     Star,
     Error as ErrorIcon,
+    Message,
     Instagram,
     LinkedIn,
     YouTube
 } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import Navbar from '../components/Navbar';
 import PageTitle from '../components/PageTitle';
 import { Link } from 'react-router-dom';
@@ -23,6 +26,7 @@ import { fetchAdminProducts, fetchAllOrders } from '../features/admin/adminSlice
 function Dashboard() {
     const { products, orders, totalAmount } = useSelector(state => state.admin);
     const dispatch = useDispatch();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         dispatch(fetchAdminProducts());
@@ -41,7 +45,25 @@ function Dashboard() {
             <PageTitle title='Admin Dashboard' />
 
             <div className="dashboard-container">
-                <div className="sidebar">
+                <button
+                    type="button"
+                    className={`admin-sidebar-toggle ${isSidebarOpen ? 'hidden' : ''}`}
+                    onClick={() => setIsSidebarOpen(true)}
+                >
+                    <MenuIcon />
+                    Menu
+                </button>
+                {isSidebarOpen && (
+                    <div className="admin-sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
+                )}
+                <div className={`sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
+                    <button
+                        type="button"
+                        className="admin-sidebar-close"
+                        onClick={() => setIsSidebarOpen(false)}
+                    >
+                        <CloseIcon />
+                    </button>
                     <div className="logo">
                         <DashboardIcon className='logo-icon' />
                         Admin Dashboard
@@ -80,6 +102,14 @@ function Dashboard() {
                             <Link to='/admin/reviews'>
                                 <Star className='nav-icon' />
                                 All Reviews
+                            </Link>
+                        </div>
+
+                        <div className="nav-section">
+                            <h3>Messages</h3>
+                            <Link to='/admin/messages'>
+                                <Message className='nav-icon' />
+                                Contact Messages
                             </Link>
                         </div>
                     </nav>

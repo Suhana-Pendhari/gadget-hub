@@ -16,7 +16,13 @@ import { getAllMyOrders } from '../features/order/orderSlice';
 function ProductDetails() {
     const [userRating, setUserRating] = useState(0);
     const [quantity, setQuantity] = useState(1);
-    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedMedia, setSelectedMedia] = useState({ type: 'image', url: null });
+    const getVideoUrl = (videoItem) => {
+        if (!videoItem) return null;
+        if (typeof videoItem === 'string') return videoItem;
+        return videoItem.url || videoItem.secure_url || null;
+    };
+
     const [comment, setComment] = useState("");
 
     const handleRatingChange = (newRating) => {
@@ -27,9 +33,6 @@ function ProductDetails() {
     const { orders = [] } = useSelector((state) => state.order);
     const errorMessage = typeof error === 'string' ? error : error?.message;
     const { loading: cartLoading, error: cartError, success, message, cartItems } = useSelector((state) => state.cart);
-    console.log(cartItems);
-
-
     const dispatch = useDispatch();
     const { id } = useParams();
     useEffect(() => {
@@ -105,8 +108,14 @@ function ProductDetails() {
     }, [reviewSuccess, id, dispatch])
 
     useEffect(() => {
-        if (product && product.image && product.image.length > 0) {
-            setSelectedImage(product.image[0].url);
+        const firstImageUrl = product?.image?.[0]?.url || null;
+        const firstVideoUrl = getVideoUrl(product?.video?.[0]);
+        if (firstImageUrl) {
+            setSelectedMedia({ type: 'image', url: firstImageUrl });
+        } else if (firstVideoUrl) {
+            setSelectedMedia({ type: 'video', url: firstVideoUrl });
+        } else {
+            setSelectedMedia({ type: 'image', url: null });
         }
     }, [product])
 
@@ -140,12 +149,57 @@ function ProductDetails() {
             <div className="product-details-container">
                 <div className="product-detail-container">
                     <div className="product-image-container">
-                        <img src={selectedImage} alt={product.name} className='product-detail-image' />
-                        {product.image.length > 1 && (<div className="product-thumbnails">
-                            {product.image.map((img, index) => (
-                                <img src={img.url} alt={`Thumbnail ${index + 1}`} className='thumbnail-image' onClick={() => setSelectedImage(img.url)} />
+                        <div className="main-media-view">
+                            {selectedMedia.type === 'video' && selectedMedia.url ? (
+                                <video
+                                    key={selectedMedia.url}
+                                    controls
+                                    playsInline
+                                    preload="metadata"
+                                    className='product-video'
+                                >
+                                    <source src={selectedMedia.url} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            ) : selectedMedia.url ? (
+                                <img src={selectedMedia.url} alt={product.name} className='product-detail-image' />
+                            ) : (
+                                <div className='product-detail-image' aria-hidden="true"></div>
+                            )}
+                        </div>
+                        <div className="media-strip">
+                            {product.image?.map((img, index) => (
+                                img?.url ? (
+                                <button
+                                    type="button"
+                                    key={img.public_id || img.url || `img-${index}`}
+                                    className={`media-thumb ${selectedMedia.type === 'image' && selectedMedia.url === img.url ? 'active' : ''}`}
+                                    onClick={() => setSelectedMedia({ type: 'image', url: img.url })}
+                                    aria-label={`Image ${index + 1}`}
+                                >
+                                    <img src={img.url} alt={`Thumbnail ${index + 1}`} className='thumbnail-image' />
+                                </button>
+                                ) : null
                             ))}
-                        </div>)}
+                            {product.video?.map((vid, index) => {
+                                const videoUrl = getVideoUrl(vid);
+                                if (!videoUrl) return null;
+                                return (
+                                    <button
+                                        type="button"
+                                        key={vid.public_id || videoUrl || `vid-${index}`}
+                                        className={`media-thumb media-video-thumb ${selectedMedia.type === 'video' && selectedMedia.url === videoUrl ? 'active' : ''}`}
+                                        onClick={() => setSelectedMedia({ type: 'video', url: videoUrl })}
+                                        aria-label={`Video ${index + 1}`}
+                                    >
+                                        <video muted preload="metadata" className='thumbnail-video'>
+                                            <source src={videoUrl} type="video/mp4" />
+                                        </video>
+                                        <span className="media-play-badge">▶</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className="product-info">

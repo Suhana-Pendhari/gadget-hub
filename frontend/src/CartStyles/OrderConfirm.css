@@ -19,13 +19,24 @@
     gap: 20px;
 }
 
+.confirm-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .confirm-table {
     width: 100%;
+    min-width: 640px;
     border-collapse: collapse;
     background-color: var(--bg-secondary);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table {
+    min-width: 760px;
 }
 
 .confirm-table caption {
@@ -51,6 +62,7 @@
 .confirm-table td {
     font-size: 0.9rem;
     color: var(--text-primary);
+    vertical-align: middle;
 }
 
 .order-product-image {
@@ -80,21 +92,40 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .confirm-container {
+        margin: 12px auto;
+        padding: 12px;
+    }
+
+    .confirm-header {
+        font-size: 1.55rem;
+        margin-bottom: 12px;
+    }
+
     .confirm-table-container {
-        gap: 15px;
+        gap: 12px;
     }
 
     .confirm-table caption {
-        font-size: 1rem;
+        font-size: 1.1rem;
+        margin: 8px;
     }
 
     .confirm-table th,
     .confirm-table td {
         font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .order-product-image {
+        width: 42px;
+        height: 42px;
     }
 
     .proceed-button {
-        padding: 10px 25px;
-        font-size: 0.9rem;
+        width: min(100%, 260px);
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        margin-top: 12px;
     }
 }

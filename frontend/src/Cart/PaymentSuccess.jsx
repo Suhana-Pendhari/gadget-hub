@@ -50,11 +50,9 @@ function PaymentSuccess() {
                     shippingPrice: orderItem.shippingCharges,
                     totalPrice: orderItem.total
                 }
-                console.log('sending Data', orderData);
                 dispatch(createOrder(orderData));
                 sessionStorage.removeItem('orderItem');
             } catch (error) {
-                console.log('Order creation error', error.message);
                 toast.error(error.message || 'Order creation error', { position: 'top-center', autoClose: 3000 });
             }
         }

@@ -8,7 +8,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  h1 {
+  .my-orders-container h1 {
     text-align: center;
     margin-bottom: 20px;
     color: var(--text-primary);
@@ -21,6 +21,7 @@
   
   .orders-table {
     width: 100%;
+    min-width: 880px;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 16px;
@@ -61,12 +62,37 @@
   }
   .order-link{
     color: var(--primary-main);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media (max-width: 768px) {
+    .my-orders-container {
+      margin: 120px auto 0;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .my-orders-container h1 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .orders-table {
+      min-width: 760px;
+      margin: 10px 0 4px;
+    }
+
     .orders-table th,
     .orders-table td {
       font-size: 14px;
-      padding: 8px 10px;
+      padding: 8px;
+    }
+
+    .orders-table td:nth-child(1),
+    .orders-table td:nth-child(2),
+    .orders-table td:nth-child(6) {
+      white-space: nowrap;
     }
   }

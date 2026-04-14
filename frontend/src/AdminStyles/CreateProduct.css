@@ -36,6 +36,13 @@
   outline: none;
 }
 
+.form-label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
 .form-select {
   cursor: pointer;
 }
@@ -57,6 +64,18 @@
   height: 100px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.video-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.video-preview {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .submit-btn {
@@ -81,6 +100,7 @@
 
 @media (max-width: 768px) {
   .create-product-container {
+    margin-top: 120px;
     padding: 15px;
   }
 

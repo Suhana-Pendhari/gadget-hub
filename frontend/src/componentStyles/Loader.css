@@ -31,12 +31,18 @@
 /* Loader CSS - Gadget Hub Theme */
 
 .loader-container {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
-  width: 100%;
+  min-height: 0;
+  width: auto;
   background: transparent;
+}
+
+.page-loader .loader-container {
+  display: flex;
+  width: 100%;
+  min-height: 200px;
 }
 
 /* Main Loader - Using your color palette */

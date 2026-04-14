@@ -277,23 +277,29 @@
 
 .social-links {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.4rem;
   flex-wrap: wrap;
 }
 
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .social-icon {
-  font-size: 2.2rem;
+  font-size: 2.8rem !important;
   color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
-  background: rgba(239, 213, 16, 0.1);
-  padding: 10px;
+  background: rgba(239, 213, 16, 0.14);
+  padding: 12px;
 }
 
 .social-icon:hover {
@@ -460,9 +466,9 @@
   }
   
   .social-icon {
-    font-size: 2rem;
-    width: 45px;
-    height: 45px;
+    font-size: 2.3rem !important;
+    width: 54px;
+    height: 54px;
   }
   
   .contact-item {
@@ -504,9 +510,9 @@
   }
   
   .social-icon {
-    font-size: 1.8rem;
-    width: 40px;
-    height: 40px;
+    font-size: 2rem !important;
+    width: 48px;
+    height: 48px;
   }
   
   .payment-methods {

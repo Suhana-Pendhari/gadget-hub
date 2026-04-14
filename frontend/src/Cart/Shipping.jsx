@@ -14,8 +14,6 @@ function Shipping() {
     const { shippingInfo } = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log(shippingInfo);
-
     const [address, setAddress] = useState(shippingInfo.address || "");
     const [pincode, setPincode] = useState(shippingInfo.pincode || "");
     const [phoneNumber, setPhoneNumber] = useState(shippingInfo.phoneNumber || "");

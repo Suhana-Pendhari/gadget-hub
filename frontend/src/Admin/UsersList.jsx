@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearMessage, deleteUser, fetchUsers, removeErrors } from '../features/admin/adminSlice';
 import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function UsersList() {
     const { users, loading, error, message } = useSelector(state => state.admin);
@@ -41,6 +42,7 @@ function UsersList() {
         <>
             {loading ? (<Loader />) : (<>
                 <Navbar />
+                <AdminQuickMenu />
                 <PageTitle title='All Users' />
                 <div className="usersList-container">
                     <h1 className="usersList-title">All Users</h1>

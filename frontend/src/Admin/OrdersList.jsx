@@ -9,6 +9,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearMessage, deleteOrder, fetchAllOrders, removeErrors, removeSuccess } from '../features/admin/adminSlice.js';
 import { toast } from 'react-toastify';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function OrdersList() {
 
@@ -51,6 +52,7 @@ function OrdersList() {
     <>
       {loading ? (<Loader />) : (<>
         <Navbar />
+        <AdminQuickMenu />
         <PageTitle title="All Orders" />
         <div className="ordersList-container">
           <h1 className="ordersList-title">All Orders</h1>
@@ -63,6 +65,8 @@ function OrdersList() {
                   <th>Status</th>
                   <th>Total Price</th>
                   <th>Number Of Items</th>
+                  <th>Products</th>
+                  <th>Order Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -75,6 +79,8 @@ function OrdersList() {
                     <td className={`order-status ${order.orderStatus.toLowerCase()}`}>{order.orderStatus}</td>
                     <td>{order.totalPrice.toFixed(2)}/-</td>
                     <td>{order.orderItems.length}</td>
+                    <td>{order.orderItems.map(item => item.name).join(', ')}</td>
+                    <td>{order.createAt ? new Date(order.createAt).toLocaleString() : 'N/A'}</td>
                     <td>
                       <Link to={`/admin/order/${order._id}`} className='action-icon edit-icon'><Edit /></Link>
                       <button className="action-btn delete-icon" onClick={()=>handleDelete(order._id)}><Delete /></button>

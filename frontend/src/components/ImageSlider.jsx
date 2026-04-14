@@ -3,11 +3,9 @@ import '../componentStyles/ImageSlider.css';
 
 const images = [
     "./images/gadgethub-bg.jpeg",
-    "./images/img1.jpeg",
+    "./images/bg-home01.png",
     "./images/gadgethub-bg.jpeg",
-    "./images/img2.jpeg",
-    "./images/gadgethub-bg.jpeg",
-    "./images/img3.jpeg",
+    "./images/bg-home02.png",
 ]
 
 function ImageSlider() {

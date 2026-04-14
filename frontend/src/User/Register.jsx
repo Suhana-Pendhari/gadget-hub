@@ -44,10 +44,6 @@ function Register() {
         myForm.set('email', email);
         myForm.set('password', password);
         myForm.set('avatar', avatar);
-        console.log(myForm.entries());
-        for (let pair of myForm.entries()) {
-            console.log(pair[0] + '-' + pair[1]);
-        }
         dispatch(register(myForm));
     }
 
@@ -67,28 +63,33 @@ function Register() {
     }, [dispatch, success])
 
     return (
-        <div className="form-container container">
-            <div className="form-content">
-                <form className='form' onSubmit={registerSubmit} encType='multipart/form-data'>
-                    <h2>Sign Up</h2>
-                    <div className="input-group">
-                        <input type="text" placeholder='Username' name='name' value={name} onChange={registerDataChange} />
-                    </div>
-                    <div className="input-group">
-                        <input type="email" placeholder='Email' name='email' value={email} onChange={registerDataChange} />
-                    </div>
-                    <div className="input-group">
-                        <input type="password" placeholder='Password' name='password' value={password} onChange={registerDataChange} />
-                    </div>
-                    <div className="input-group avatar-group">
-                        <input type="file" name='avatar' className='file-input' accept='image/' onChange={registerDataChange} />
-                        <img src={avatarPreview} alt="Avatar Preview" className='avatar' />
-                    </div>
-                    <button className='authBtn'>{loading?'Signing Up':'Sign Up'}</button>
-                    <p className="form-links">
-                        Already have an account? <Link to='/login'>Sign in here</Link>
-                    </p>
-                </form>
+        <div className="form-container container auth-page">
+            <div className="auth-card">
+                <div className="auth-image-panel">
+                    <img src="/images/new-login-logo.jpg" alt="Register Illustration" />
+                </div>
+                <div className="form-content">
+                    <form className='form' onSubmit={registerSubmit} encType='multipart/form-data'>
+                        <h2>Sign Up</h2>
+                        <div className="input-group">
+                            <input type="text" placeholder='Username' name='name' value={name} onChange={registerDataChange} />
+                        </div>
+                        <div className="input-group">
+                            <input type="email" placeholder='Email' name='email' value={email} onChange={registerDataChange} />
+                        </div>
+                        <div className="input-group">
+                            <input type="password" placeholder='Password' name='password' value={password} onChange={registerDataChange} />
+                        </div>
+                        <div className="input-group avatar-group">
+                            <input type="file" name='avatar' className='file-input' accept='image/' onChange={registerDataChange} />
+                            <img src={avatarPreview} alt="Avatar Preview" className='avatar' />
+                        </div>
+                        <button className='authBtn'>{loading?'Signing Up':'Sign Up'}</button>
+                        <p className="form-links">
+                            Already have an account? <Link to='/login'>Sign in here</Link>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     )

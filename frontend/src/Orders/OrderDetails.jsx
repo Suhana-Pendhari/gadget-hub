@@ -14,8 +14,6 @@ function OrderDetails() {
     const { orderId } = useParams();
     const { order, loading, error } = useSelector(state => state.order);
     const dispatch = useDispatch();
-    console.log(order);
-
     useEffect(() => {
         dispatch(getOrderDetails(orderId));
         if (error) {
@@ -35,7 +33,8 @@ function OrderDetails() {
         itemPrice,
         paidAt,
         estimatedDeliveryDate,
-        trackingTimeline = []
+        trackingTimeline = [],
+        createAt
     } = order;
 
     const paymentStatus = paymentInfo?.status === 'succeeded'
@@ -113,7 +112,7 @@ function OrderDetails() {
                                     <span className={paymentStatusClass}>{paymentStatus}</span>
                                 </td>
                             </tr>
-                            {paidAt && (<tr className="table-row">
+                            {paidAt && paymentStatus !== 'Cash on Delivery' && (<tr className="table-row">
                                 <th className="table-cell">Paid At</th>
                                 <td className="table-cell">{new Date(paidAt).toLocaleString()}</td>
                             </tr>)}

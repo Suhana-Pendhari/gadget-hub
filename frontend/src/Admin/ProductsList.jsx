@@ -9,10 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, fetchAdminProducts, removeErrors, removeSuccess } from '../features/admin/adminSlice';
 import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function ProductsList() {
     const { products, loading, error, deleting } = useSelector(state => state.admin);
-    console.log(products);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchAdminProducts())
@@ -50,9 +50,11 @@ function ProductsList() {
         <>
             {loading ? (<Loader />) : (<>
                 <Navbar />
+                <AdminQuickMenu />
                 <PageTitle title='All Products' />
                 <div className="product-list-container">
                     <h1 className="product-list">All Products</h1>
+                    <div className="product-table-container">
                     <table className="product-table">
                         <thead>
                             <tr>
@@ -69,24 +71,34 @@ function ProductsList() {
                         </thead>
 
                         <tbody>
-                            {products.map((product, index) => (
-                                <tr key={product._id}>
-                                    <td>{index + 1}</td>
-                                    <td><img src={product.image[0].url} alt={product.name} className='admin-product-image' /></td>
-                                    <td>{product.name}</td>
-                                    <td>{product.price}/-</td>
-                                    <td>{product.ratings}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.stock}</td>
-                                    <td>{new Date(product.createdAt).toLocaleString()}</td>
-                                    <td>
-                                        <Link to={`/admin/product/${product._id}`} className='action-icon edit-icon'><Edit /></Link>
-                                        <button className="action-icon delete-icon" disabled={deleting[product._id]} onClick={() => handleDelete(product._id)}>{deleting[product._id]?<Loader/>:<Delete/>}</button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {products.map((product, index) => {
+                                const imageUrl = product?.image?.[0]?.url || './images/gadgethub-bg.jpeg';
+                                return (
+                                    <tr key={product._id}>
+                                        <td>{index + 1}</td>
+                                        <td>
+                                            <img
+                                                src={imageUrl}
+                                                alt={product.name || 'Product Image'}
+                                                className='admin-product-image'
+                                            />
+                                        </td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price}/-</td>
+                                        <td>{product.ratings}</td>
+                                        <td>{product.category}</td>
+                                        <td>{product.stock}</td>
+                                        <td>{new Date(product.createdAt).toLocaleString()}</td>
+                                        <td>
+                                            <Link to={`/admin/product/${product._id}`} className='action-icon edit-icon'><Edit /></Link>
+                                            <button className="action-icon delete-icon" disabled={deleting[product._id]} onClick={() => handleDelete(product._id)}>{deleting[product._id]?<Loader/>:<Delete/>}</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 <Footer />
             </>)}

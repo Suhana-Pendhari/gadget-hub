@@ -18,7 +18,6 @@ function Login() {
 
     const loginSubmit = (e) => {
         e.preventDefault();
-        console.log('Hello');
         dispatch(login({ email: loginEmail, password: loginPassword }));
     }
 
@@ -43,24 +42,29 @@ function Login() {
     }, [dispatch, success])
 
     return (
-        <div className="form-container container">
-            <div className="form-content">
-                <form className='form' onSubmit={loginSubmit}>
-                    <h2>Sign In</h2>
-                    <div className="input-group">
-                        <input type="email" placeholder='Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
-                    </div>
-                    <div className="input-group">
-                        <input type="password" placeholder='Password' value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
-                    </div>
-                    <button className="authBtn">Sign In</button>
-                    <p className="form-links">
-                        Forgot your Password? <Link to="/password/forgot">Reset Here</Link>
-                    </p>
-                    <p className="form-links">
-                        Don't have an account? <Link to="/register">Sign up here</Link>
-                    </p>
-                </form>
+        <div className="form-container container auth-page">
+            <div className="auth-card">
+                <div className="auth-image-panel">
+                    <img src="/images/new-login-logo.jpg" alt="Login Illustration" />
+                </div>
+                <div className="form-content">
+                    <form className='form' onSubmit={loginSubmit}>
+                        <h2>Sign In</h2>
+                        <div className="input-group">
+                            <input type="email" placeholder='Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                        </div>
+                        <div className="input-group">
+                            <input type="password" placeholder='Password' value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
+                        </div>
+                        <button className="authBtn">Sign In</button>
+                        <p className="form-links">
+                            Forgot your Password? <Link to="/password/forgot">Reset Here</Link>
+                        </p>
+                        <p className="form-links">
+                            Don't have an account? <Link to="/register">Sign up here</Link>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     )

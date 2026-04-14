@@ -12,7 +12,6 @@ function Product({product}) {
 
     const handleRatingChange = (newRating)=>{
         setRating(newRating);
-        console.log(`Rating changed to: ${newRating}`);
     }
   return (
     <Link to={`/product/${product._id}`} className="product_id">

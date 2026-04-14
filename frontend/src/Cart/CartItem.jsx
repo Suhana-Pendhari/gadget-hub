@@ -77,8 +77,12 @@ function CartItem({ item }) {
             </div>
 
             <div className="item-actions">
-                <button className="update-item-btn" onClick={handleUpdate} disabled={loading || quantity === item.quantity}>{loading ? 'Updating' : 'Update'}</button>
-                <button className="remove-item-btn" disabled={loading} onClick={handleRemove}>Remove</button>
+                <button type="button" className="update-item-btn" onClick={handleUpdate} disabled={loading || quantity === item.quantity}>
+                    {loading ? 'Updating' : 'Update'}
+                </button>
+                <button type="button" className="remove-item-btn" disabled={loading} onClick={handleRemove}>
+                    Remove
+                </button>
             </div>
 
         </div>

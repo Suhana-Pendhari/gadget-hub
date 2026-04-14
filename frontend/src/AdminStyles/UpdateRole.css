@@ -54,4 +54,16 @@
   .btn:hover {
     background-color: var(--primary-dark);
   }
+
+@media (max-width: 768px) {
+  .page-wrapper {
+    justify-content: flex-start;
+    padding-top: 120px;
+    min-height: calc(100vh - 120px);
+  }
+
+  .update-user-role-form {
+    min-height: auto;
+  }
+}
   

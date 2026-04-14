@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PageTitle from '../components/PageTitle';
 import Loader from '../components/Loader';
+import Navbar from '../components/Navbar';
 
 function Profile() {
     const {loading, isAuthenticated, user} = useSelector(state=>state.user);
-    console.log(user);
     const navigate = useNavigate();
     useEffect(()=>{
         if(isAuthenticated===false){
@@ -16,6 +16,7 @@ function Profile() {
     }, [isAuthenticated])
   return (
     <>
+    <Navbar />
     {loading?(<Loader/>):<div className="profile-container">
         <PageTitle title={`${user.name} Profile`}/>
         <div className="profile-image">

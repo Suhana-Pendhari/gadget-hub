@@ -12,8 +12,6 @@ import Loader from '../components/Loader';
 
 function MyOrders() {
     const { orders, loading, error } = useSelector(state => state.order);
-    console.log(orders);
-
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getAllMyOrders());
@@ -33,9 +31,11 @@ function MyOrders() {
                         <thead>
                             <tr>
                                 <th>Order Id</th>
+                                <th>Items</th>
                                 <th>Items Count</th>
                                 <th>Status</th>
                                 <th>Total Price</th>
+                                <th>Order Date</th>
                                 <th>View Order</th>
                             </tr>
                         </thead>
@@ -43,9 +43,11 @@ function MyOrders() {
                             {orders.map((order) => (
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
+                                    <td>{order.orderItems.map(item => item.name).join(', ')}</td>
                                     <td>{order.orderItems.length}</td>
                                     <td>{order.orderStatus}</td>
                                     <td>{order.totalPrice}</td>
+                                    <td>{order.createAt ? new Date(order.createAt).toLocaleString() : 'N/A'}</td>
                                     <td><Link to={`/order/${order._id}`} className='order-link'><LaunchOutlined /></Link></td>
                                 </tr>
                             ))}

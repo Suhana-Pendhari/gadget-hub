@@ -9,6 +9,7 @@ import { getOrderDetails } from '../features/order/orderSlice';
 import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
 import { removeErrors, removeSuccess, updateOrderStatus } from '../features/admin/adminSlice';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function UpdateOrder() {
     const [status, setStatus] = useState("");
@@ -31,7 +32,8 @@ function UpdateOrder() {
         orderItems = [],
         paymentInfo = {},
         orderStatus,
-        totalPrice
+        totalPrice,
+        createAt
     } = order;
 
     const paymentStatus = paymentInfo.status === 'succeeded' ? 'Paid' : paymentInfo.status === 'pending' ? 'Cash on Delivery' : 'Not Paid';
@@ -60,12 +62,14 @@ function UpdateOrder() {
     return (
         <>
             <Navbar />
+            <AdminQuickMenu />
             <PageTitle title="Update Order" />
             {loading ? (<Loader />) : (<div className="order-container">
                 <h1 className="order-title">Update Order</h1>
                 <div className="order-details">
                     <h2>Order Information</h2>
                     <p><strong>Order ID: </strong>{orderId}</p>
+                    <p><strong>Order Date & Time: </strong>{createAt ? new Date(createAt).toLocaleString() : 'N/A'}</p>
                     <p><strong>Shipping Address: </strong>{shippingInfo.address}, {shippingInfo.city}, {shippingInfo.state}, {shippingInfo.country} - {shippingInfo.pinCode}</p>
                     <p><strong>Phone: </strong>{shippingInfo.phoneNo}</p>
                     <p><strong>Order Status: </strong>{finalOrderStatus}</p>
@@ -75,6 +79,7 @@ function UpdateOrder() {
 
                 <div className="order-items">
                     <h2>Order Items</h2>
+                    <div className="order-table-container">
                     <table className="order-table">
                         <thead>
                             <tr>
@@ -97,6 +102,7 @@ function UpdateOrder() {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 </div>
 
                 <div className="order-status">

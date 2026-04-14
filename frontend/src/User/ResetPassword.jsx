@@ -15,17 +15,10 @@ function ResetPassword() {
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    // console.log(useParams()); // useParams => Hook
     const { token } = useParams();
 
     const resetPasswordSubmit = (e) => {
         e.preventDefault();
-        // const myForm = new FormData();
-        // myForm.set("password", password);
-        // myForm.set("confirmPassword", confirmPassword);
-        // for (let pair of myForm.entries()) {
-        //     console.log(pair[0] + '-' + pair[1]);
-        // }
         const data = {
             password,
             confirmPassword

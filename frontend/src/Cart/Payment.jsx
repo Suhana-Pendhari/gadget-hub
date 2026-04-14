@@ -52,7 +52,7 @@ function Payment() {
           contact: shippingInfo.phoneNumber
         },
         theme: {
-          color: '#f9e442'  // gold theme
+          color: '#2563eb'
         },
       };
 

@@ -1,20 +1,78 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getProduct = createAsyncThunk('product/getProduct', async({keyword, page=1, category}, {rejectWithValue})=>{
+const dedupeProductsById = (products = []) => {
+    const seen = new Set();
+    return products.filter((product) => {
+        const id = product?._id;
+        if (!id) return true;
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+    });
+};
+
+export const getProduct = createAsyncThunk('product/getProduct', async({keyword, category, topReviews=false, limit, fetchAll=false}, {rejectWithValue})=>{
     try {
-        // const link = keyword?`/api/v1/products?keyword=${encodeURIComponent(keyword)}&page=${page}`:`/api/v1/products?page=${page}`;
-        
-        let link = '/api/v1/products?page='+page;
+        const queryParts = [];
         if(category){
-            link+=`&category=${encodeURIComponent(category)}`;
+            queryParts.push(`category=${encodeURIComponent(category)}`);
         }
         if(keyword){
-            link+=`&keyword=${encodeURIComponent(keyword)}`;
+            queryParts.push(`keyword=${encodeURIComponent(keyword)}`);
         }
-        const {data} = await axios.get(link);
-        console.log("Response:", data);
-        return data;
+        if(topReviews){
+            queryParts.push(`topReviews=true`);
+        }
+        if(limit){
+            queryParts.push(`limit=${encodeURIComponent(limit)}`);
+        }
+
+        const queryPrefix = queryParts.length > 0 ? `${queryParts.join('&')}&` : '';
+        const firstLink = `/api/v1/products?${queryPrefix}page=1`;
+        const {data: firstPageData} = await axios.get(firstLink);
+
+        if (!fetchAll) {
+            return {
+                ...firstPageData,
+                products: dedupeProductsById(firstPageData.products || [])
+            };
+        }
+
+        const allProducts = [...(firstPageData.products || [])];
+        const totalPages = Number(firstPageData?.totalPages) || 0;
+
+        if (totalPages > 1) {
+            for (let page = 2; page <= totalPages; page++) {
+                const pageLink = `/api/v1/products?${queryPrefix}page=${page}`;
+                const { data: pageData } = await axios.get(pageLink);
+                allProducts.push(...(pageData.products || []));
+            }
+        } else {
+            // Backward-compatible fallback: keep fetching until next page is empty/error.
+            for (let page = 2; page <= 100; page++) {
+                try {
+                    const pageLink = `/api/v1/products?${queryPrefix}page=${page}`;
+                    const { data: pageData } = await axios.get(pageLink);
+                    const pageProducts = pageData?.products || [];
+                    if (pageProducts.length === 0) break;
+                    allProducts.push(...pageProducts);
+                } catch (_) {
+                    break;
+                }
+            }
+        }
+
+        const uniqueProducts = dedupeProductsById(allProducts);
+
+        return {
+            ...firstPageData,
+            products: uniqueProducts,
+            productCount: uniqueProducts.length,
+            resultsPerPage: uniqueProducts.length,
+            totalPages: 1,
+            currentPage: 1
+        };
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');
     }
@@ -94,7 +152,6 @@ const productSlice = createSlice({
             state.error=null;
         })
         .addCase(getProduct.fulfilled, (state, action)=>{
-            console.log("Fulfilled action payload", action.payload);
             state.loading=false;
             state.error=null;
             state.products=action.payload.products;
@@ -130,7 +187,6 @@ const productSlice = createSlice({
             state.error=null;
         })
         .addCase(getProductDetails.fulfilled, (state, action)=>{
-            console.log("Product Details", action.payload);
             state.loading=false;
             state.error=null;
             state.product=action.payload.product;

@@ -10,8 +10,6 @@ import { Link, useNavigate } from 'react-router-dom';
 function Cart() {
 
     const { cartItems } = useSelector(state => state.cart);
-    console.log(cartItems);
-
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = subtotal*0.18;
     const shipping = subtotal>500?0:50;
@@ -55,20 +53,20 @@ function Cart() {
                     <div className="price-summary">
                         <h3 className="price-summary-heading">Price Summary</h3>
                         <div className="summary-item">
-                            <p className="summary-label">Subtotal : </p>
-                            <p className="summary-value">{subtotal}/-</p>
+                            <p className="summary-label">Subtotal :</p>
+                            <p className="summary-value">{Number.isFinite(subtotal) ? subtotal.toFixed(2) : '0.00'}/-</p>
                         </div>
                         <div className="summary-item">
-                            <p className="summary-label">Tax (18%): </p>
-                            <p className="summary-value">{tax}/-</p>
+                            <p className="summary-label">Tax (18%):</p>
+                            <p className="summary-value">{Number.isFinite(tax) ? tax.toFixed(2) : '0.00'}/-</p>
                         </div>
                         <div className="summary-item">
                             <p className="summary-label">Shipping :</p>
-                            <p className="summary-value">{shipping}/-</p>
+                            <p className="summary-value">{Number.isFinite(shipping) ? shipping.toFixed(2) : '0.00'}/-</p>
                         </div>
                         <div className="summary-total">
                             <p className="total-label">Total :</p>
-                            <p className="total-value">{total}/-</p>
+                            <p className="total-value">{Number.isFinite(total) ? total.toFixed(2) : '0.00'}/-</p>
                         </div>
                         <button className="checkout-btn" onClick={checkoutHandler}>Proceed to Checkout</button>
                     </div>

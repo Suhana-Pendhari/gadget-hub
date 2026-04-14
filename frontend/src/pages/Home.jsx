@@ -16,7 +16,7 @@ function Home() {
     const { loading, error, products, productCount, discountedProducts, discountedLoading, discountedLoaded } = useSelector((state) => state.product);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getProduct({keyword:""}));
+        dispatch(getProduct({ keyword: "", fetchAll: true }));
     }, [dispatch])
     useEffect(() => {
         // Default: show all discounted products in Hot Deals
@@ -28,6 +28,15 @@ function Home() {
             dispatch(removeErrors());
         }
     }, [dispatch, error])
+
+    const trendingProducts = [...(products || [])]
+        .sort((a, b) => {
+            const reviewDiff = (b?.numOfReviews || 0) - (a?.numOfReviews || 0);
+            if (reviewDiff !== 0) return reviewDiff;
+            return (b?.ratings || 0) - (a?.ratings || 0);
+        })
+        .slice(0, 5);
+
     return (
         <>
             {loading ? (<Loader />) : (<>
@@ -56,7 +65,7 @@ function Home() {
                 <div className="home-container">
                     <h2 className="home-heading">Trending Now</h2>
                     <div className="home-product-container">
-                        {products.map((product, index) => (
+                        {trendingProducts.map((product, index) => (
                             <Product product={product} key={index} />
                         ))}
                     </div>

@@ -20,8 +20,13 @@
 
   .reviews-table {
     width: 100%;
+    min-width: 760px;
     border-collapse: collapse;
     margin-top: 20px;
+  }
+  .reviews-table-container{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .reviews-table th, .reviews-table td {
@@ -32,16 +37,20 @@
   
   .reviews-table th {
     background-color: var(--bg-secondary);
-    color: var(--text-light);
+    color: #000;
     font-weight: 600;
   }
   
-  .reviews-table td {
+  .reviews-table tr:nth-child(even) {
     background-color: var(--bg-primary);
   }
   
+  .reviews-table tr:nth-child(odd) {
+    background-color: var(--bg-secondary);
+  }
+  
   .reviews-table tr:hover {
-    background-color: var(--bg-primary);
+    background-color: rgba(0, 0, 0, 0.05);
   }
   
 
@@ -84,7 +93,7 @@
 
   @media (max-width: 768px) {
     .reviews-list-container {
-      margin: 20px;
+    margin: 120px 20px 20px;
       padding: 15px;
     }
   

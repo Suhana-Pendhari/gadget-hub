@@ -1,6 +1,6 @@
 .profile-container {
     max-width: 800px;
-    margin: 3rem auto;
+    margin: 90px auto 3rem;
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -118,7 +118,7 @@
   
   @media (max-width: 768px) {
     .profile-container {
-      margin: 1.5rem;
+      margin: 82px 1rem 1.5rem;
       padding: 1.5rem;
     }
   

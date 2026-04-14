@@ -18,6 +18,7 @@
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.12.2",
     "country-state-city": "^3.2.1",
+    "e-commerce": "file:..",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",

@@ -9,6 +9,7 @@ import { clearMessage, deleteReview, fetchAdminProducts, fetchProductReviews, re
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function ReviewsList() {
 
@@ -58,9 +59,11 @@ function ReviewsList() {
         <>
             {loading ? (<Loader />) : (<>
                 <Navbar />
+                <AdminQuickMenu />
                 <PageTitle title='All Reviews' />
                 <div className="reviews-list-container">
                     <h1 className="reviews-list-title">All Products</h1>
+                    <div className="reviews-table-container">
                     <table className="reviews-table">
                         <thead>
                             <tr>
@@ -88,9 +91,11 @@ function ReviewsList() {
                             ))}
                         </tbody>
                     </table>
+                    </div>
 
                     {selectedProduct && reviews && reviews.length > 0 && (<div className="reviews-details">
                         <h2>Reviews for Product</h2>
+                        <div className="reviews-table-container">
                         <table className="reviews-table">
                             <thead>
                                 <tr>
@@ -116,6 +121,7 @@ function ReviewsList() {
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     </div>)}
                 </div>
 

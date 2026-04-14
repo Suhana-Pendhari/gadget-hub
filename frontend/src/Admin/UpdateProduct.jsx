@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProductDetails } from '../features/products/productSlice';
 import { removeErrors, removeSuccess, updateProduct } from '../features/admin/adminSlice';
 import { toast } from 'react-toastify';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function UpdateProduct() {
 
@@ -20,6 +21,9 @@ function UpdateProduct() {
     const [image, setImage] = useState([]);
     const [oldImage, setOldImage] = useState([]);
     const [imagePreview, setImagePreview] = useState([]);
+    const [video, setVideo] = useState([]);
+    const [oldVideo, setOldVideo] = useState([]);
+    const [videoPreview, setVideoPreview] = useState([]);
 
     const { product } = useSelector(state => state.product);
     const { success, error, loading } = useSelector(state => state.admin);
@@ -27,7 +31,7 @@ function UpdateProduct() {
     const navigate = useNavigate();
     const { updateId } = useParams();
 
-    const categories = ['glass', 'shirt', 'mobile', 'dress', 'tv'];
+    const categories = ['Mobile Accessories', 'Gaming Accessories', 'TV', 'Smart Gadgets', 'Car Accessories', 'Photography', 'Toys'];
 
     useEffect(() => {
         dispatch(getProductDetails(updateId));
@@ -42,12 +46,13 @@ function UpdateProduct() {
             setStock(product.stock);
             setDiscountPercent(product.discountPercent ?? 0);
             setOldImage(product.image);
+            setOldVideo(product.video || []);
         }
     }, [product])
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        setImage([]);
+        setImage(files);
         setImagePreview([]);
 
         files.forEach((file) => {
@@ -55,10 +60,20 @@ function UpdateProduct() {
             reader.onload = () => {
                 if (reader.readyState === 2) {
                     setImagePreview((old) => [...old, reader.result]);
-                    setImage((old) => [...old, reader.result]);
                 }
             }
             reader.readAsDataURL(file);
+        })
+    }
+
+    const handleVideoChange = (e) => {
+        const files = Array.from(e.target.files);
+        setVideo([]);
+        setVideoPreview([]);
+
+        files.forEach((file) => {
+            setVideoPreview((old) => [...old, file.name]);
+            setVideo((old) => [...old, file]);
         })
     }
 
@@ -73,6 +88,9 @@ function UpdateProduct() {
         myForm.set('discountPercent', discountPercent);
         image.forEach((img) => {
             myForm.append('image', img);
+        })
+        video.forEach((vid) => {
+            myForm.append('video', vid);
         })
         dispatch(updateProduct({ id: updateId, formData: myForm }));
     }
@@ -92,6 +110,7 @@ function UpdateProduct() {
     return (
         <>
             <Navbar />
+            <AdminQuickMenu />
             <PageTitle title="Update Product" />
             <div className="update-product-wrapper">
                 <h1 className="update-product-title">Update Product</h1>
@@ -144,6 +163,23 @@ function UpdateProduct() {
                     <div className="update-product-old-images-wrapper">
                         {oldImage.map((img, index) => (
                             <img src={img.url} key={index} alt="Old Product Preview" className='update-product-old-image' />
+                        ))}
+                    </div>
+
+                    <label htmlFor="video">Product Videos</label>
+                    <div className="update-product-file-wrapper">
+                        <input type="file" accept='video/*' name='video' multiple className='update-product-file-input' onChange={handleVideoChange} />
+                    </div>
+
+                    <div className="update-product-preview-wrapper">
+                        {videoPreview.map((vid, index) => (
+                            <p key={index} className="update-product-preview-video">{vid}</p>
+                        ))}
+                    </div>
+
+                    <div className="update-product-old-videos-wrapper">
+                        {oldVideo.map((vid, index) => (
+                            <p key={index} className='update-product-old-video'>{vid.url.split('/').pop()}</p>
                         ))}
                     </div>
 

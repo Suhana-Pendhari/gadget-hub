@@ -88,6 +88,24 @@
     border-radius: 8px;
     border: 1px solid var(--border-color);
   }
+
+  .update-product-preview-video,
+  .update-product-old-video {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+  }
+
+  .update-product-old-videos-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90%;
+    max-width: 720px;
+  }
   
   .update-product-submit-btn {
     width: 100%;
@@ -104,6 +122,7 @@
   @media (max-width: 840px) {
     .update-product-wrapper {
       width: 95%;
+      margin-top: 120px;
       padding: 24px;
     }
     

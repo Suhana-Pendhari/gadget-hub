@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleUser, removeErrors, removeSuccess, updateUserRole } from '../features/admin/adminSlice';
 import { toast } from 'react-toastify';
+import AdminQuickMenu from '../components/AdminQuickMenu';
 
 function UpdateRole() {
 
@@ -60,6 +61,7 @@ function UpdateRole() {
     return (
         <>
             <Navbar />
+            <AdminQuickMenu />
             <PageTitle title='Update User Role' />
             <div className="page-wrapper">
                 <div className="update-user-role-container">

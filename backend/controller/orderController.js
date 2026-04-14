@@ -53,7 +53,7 @@ export const createNewOrder = handleAsyncError(async(req, res, next) => {
                 body: `Order successful! Order ID: ${order._id}. Estimated delivery by ${new Date(estimatedDeliveryDate).toDateString()}.`
             });
         } catch (smsError) {
-            console.log('SMS send failed:', smsError.message);
+            // Ignore SMS failures and continue order flow.
         }
     }
 
@@ -131,25 +131,18 @@ export const uppdateOrderStatus = handleAsyncError(async(req, res, next) => {
         
         // Send SMS notification when delivered
         const phoneNo = order.shippingInfo?.phoneNo;
-        console.log('Order delivered - attempting to send SMS. Phone:', phoneNo);
         
         const to = normalizeIndianPhone(phoneNo);
-        console.log('Normalized phone number:', to);
         
         if (to) {
             try {
-                console.log('Sending SMS to:', to);
-                const result = await sendSMS({
+                await sendSMS({
                     to,
                     body: `Your order has been delivered successfully! Order ID: ${order._id}. Thank you for your purchase!`
                 });
-                console.log('SMS sent successfully:', result.sid);
             } catch (smsError) {
-                console.error('SMS send failed - Error:', smsError.message || smsError);
-                console.error('SMS Error details:', smsError);
+                // Ignore SMS failures and continue order flow.
             }
-        } else {
-            console.log('Invalid phone number, SMS not sent');
         }
     }
     await order.save({validateBeforeSave:false});

@@ -23,8 +23,8 @@ function CheckoutPath({activePath}) {
     <div className="checkoutPath">
        {path.map((item,index)=>(
             <div className="checkoutPath-step" key={index}
-                activePath={activePath===index?'true':'false'}
-                completed={activePath>=index?'true':'false'}
+                data-active={activePath===index?'true':'false'}
+                data-completed={activePath>=index?'true':'false'}
             >
             <p className="checkoutPath-icon">{item.icon}</p>
             <p className="checkoutPath-label">{item.label}</p>

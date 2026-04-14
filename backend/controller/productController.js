@@ -11,10 +11,12 @@ import Order from '../models/orderModel.js';
 // 1) creating products
 export const createProducts = handleAsyncError(async (req, res, next) => {
     let image = [];
-    if (typeof req.body.image === "string") {
-        image.push(req.body.image);
-    } else {
-        image = req.body.image;
+    if (req.files && req.files.image) {
+        if (Array.isArray(req.files.image)) {
+            image = req.files.image;
+        } else {
+            image = [req.files.image];
+        }
     }
     const imageLinks = [];
     for (let i = 0; i < image.length; i++) {
@@ -22,6 +24,21 @@ export const createProducts = handleAsyncError(async (req, res, next) => {
         imageLinks.push(imageLink);
     }
     req.body.image = imageLinks;
+
+    let video = [];
+    if (req.files && req.files.video) {
+        if (Array.isArray(req.files.video)) {
+            video = req.files.video;
+        } else {
+            video = [req.files.video];
+        }
+    }
+    const videoLinks = [];
+    for (let i = 0; i < video.length; i++) {
+        const videoLink = await uploadToCloudinary(video[i], 'products');
+        videoLinks.push(videoLink);
+    }
+    req.body.video = videoLinks;
 
     req.body.user = req.user.id; // which admin is logged in and creating the product
     const product = await Product.create(req.body);
@@ -33,24 +50,25 @@ export const createProducts = handleAsyncError(async (req, res, next) => {
 
 // 2) Get all products
 export const getAllProducts = handleAsyncError(async (req, res, next) => {
-    const resultPerPage = 4;
-    const apiFeatures = new APIFunctionality(Product.find(), req.query).search().filter();
+    if (req.query.topReviews === 'true') {
+        const limit = Number(req.query.limit) || 4;
+        const products = await Product.find()
+            .sort({ numOfReviews: -1, ratings: -1, createdAt: -1 })
+            .limit(limit);
 
-    // getting filtered query before pagination
-    const filteredQuery = apiFeatures.query.clone();
-    const productCount = await filteredQuery.countDocuments();
-
-    // Calculate totalpages based on filtered count
-    const totalPages = Math.ceil(productCount / resultPerPage);
-    const page = Number(req.query.page) || 1;
-
-    if (page > totalPages && productCount > 0) {
-        return next(new HandleError("This page does not exists!", 404))
+        return res.status(200).json({
+            success: true,
+            products,
+            productCount: products.length,
+            resultPerPage: limit,
+            totalPages: 1,
+            currentPage: 1
+        });
     }
 
-    // Apply pagination
-    apiFeatures.pagination(resultPerPage);
+    const apiFeatures = new APIFunctionality(Product.find(), req.query).search().filter();
     const products = await apiFeatures.query;
+    const productCount = products.length;
 
     if (!products || products.length === 0) {
         return next(new HandleError("No Product Found!"), 404);
@@ -60,9 +78,9 @@ export const getAllProducts = handleAsyncError(async (req, res, next) => {
         success: true,
         products,
         productCount,
-        resultPerPage,
-        totalPages,
-        currentPage: page
+        resultPerPage: productCount,
+        totalPages: 1,
+        currentPage: 1
     })
 })
 
@@ -74,10 +92,12 @@ export const updateProduct = handleAsyncError(async (req, res, next) => {
     }
     
     let images = [];
-    if (typeof req.body.image === "string") {
-        images.push(req.body.image);
-    } else if (Array.isArray(req.body.image)) {
-        images = req.body.image;
+    if (req.files && req.files.image) {
+        if (Array.isArray(req.files.image)) {
+            images = req.files.image;
+        } else {
+            images = [req.files.image];
+        }
     }
 
     if (images.length > 0) {
@@ -92,6 +112,29 @@ export const updateProduct = handleAsyncError(async (req, res, next) => {
             imageLinks.push(imageLink);
         }
         req.body.image = imageLinks;
+    }
+
+    let videos = [];
+    if (req.files && req.files.video) {
+        if (Array.isArray(req.files.video)) {
+            videos = req.files.video;
+        } else {
+            videos = [req.files.video];
+        }
+    }
+
+    if (videos.length > 0) {
+        for (let i = 0; i < product.video.length; i++) {
+            await cloudinary.uploader.destroy(product.video[i].public_id);
+        }
+
+        //Upload new videos
+        const videoLinks = [];
+        for (let i = 0; i < videos.length; i++) {
+            const videoLink = await uploadToCloudinary(videos[i], 'products');
+            videoLinks.push(videoLink);
+        }
+        req.body.video = videoLinks;
     }
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -113,6 +156,9 @@ export const deleteProduct = handleAsyncError(async (req, res, next) => {
     }
     for(let i=0; i<product.image.length; i++){
         await cloudinary.uploader.destroy(product.image[i].public_id)
+    }
+    for(let i=0; i<product.video.length; i++){
+        await cloudinary.uploader.destroy(product.video[i].public_id)
     }
     res.status(200).json({
         success: true,
