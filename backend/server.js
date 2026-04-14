@@ -2,6 +2,11 @@ import app from './app.js';
 import { connectMongoDatabase } from './config/db.js';
 import { getRazorpayInstance } from './config/razorpay.js';
 import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+if (process.env.NODE_ENV !== 'PRODUCTION') {
+    dotenv.config({ path: 'backend/config/config.env', quiet: true });
+}
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
