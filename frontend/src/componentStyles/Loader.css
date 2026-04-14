@@ -1,11 +1,11 @@
 /* Loader CSS - Gadget Hub Theme */
 
 .loader-container {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 0;
-  width: auto;
+  min-height: 60vh;
+  width: 100%;
   background: transparent;
 }
 
