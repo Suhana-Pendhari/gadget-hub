@@ -1,14 +1,7 @@
 import app from './app.js';
-import dotenv from 'dotenv';
 import { connectMongoDatabase } from './config/db.js';
-if(process.env.NODE_ENV!=='PRODUCTION'){
-    dotenv.config({ path: 'backend/config/config.env' });
-}
 import Razorpay from 'razorpay';
-dotenv.config({ path: "backend/config/config.env" });
 import { v2 as cloudinary } from 'cloudinary';
-
-connectMongoDatabase();
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -29,11 +22,27 @@ export const instance = new Razorpay({
     key_secret: process.env.RAZORPAY_API_SECRET,
 });
 
-const server = app.listen(port, () => {})
+let server;
+
+const startServer = async () => {
+    try {
+        await connectMongoDatabase();
+        server = app.listen(port, () => {});
+    } catch (error) {
+        console.error(`Startup failed: ${error.message}`);
+        process.exit(1);
+    }
+};
+
+startServer();
 
 
 process.on('unhandledRejection', (err) => {
-    server.close(() => {
+    if (server) {
+        server.close(() => {
+            process.exit(1);
+        });
+    } else {
         process.exit(1);
-    })
+    }
 })
