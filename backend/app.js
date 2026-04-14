@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename=fileURLToPath(import.meta.url);
@@ -29,11 +30,14 @@ app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1/contact", contact);
 
-//server static files
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-app.use((_,res)=>{
-    res.sendFile(path.resolve(__dirname,'../frontend/dist/index.html'));
-});
+// Serve frontend only when build exists (local/fullstack deploys)
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+    app.use(express.static(frontendDistPath));
+    app.use((_, res) => {
+        res.sendFile(path.resolve(frontendDistPath, 'index.html'));
+    });
+}
 
 app.use(errorHandleMiddleware);
 if (process.env.NODE_ENV !== 'PRODUCTION') {
