@@ -401,6 +401,20 @@
   transition: all 0.2s ease-in-out;
 }
 
+/* Mobile scroll fix: keep vertical page scroll responsive */
+@media (max-width: 768px) {
+  .cart-page {
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+  }
+
+  .cart-table {
+    touch-action: auto !important;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
+  }
+}
+
 /* Performance overrides for smoother mobile scrolling */
 .cart-item {
   transition: none !important;
