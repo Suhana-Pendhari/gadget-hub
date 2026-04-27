@@ -203,6 +203,41 @@
     background: #0955d4;
     transform: translateY(-1px);
   }
+
+  .product-action-buttons {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .product-action-buttons .add-to-cart-btn {
+    flex: 1;
+    margin: 0;
+  }
+
+  .buy-now-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: #ff9800;
+    border: 1px solid #f57c00;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .buy-now-btn:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+  }
+
+  .buy-now-btn:disabled {
+    background: #ccc;
+    border-color: #999;
+    cursor: not-allowed;
+    transform: none;
+  }
   
 
   .reviews-container {

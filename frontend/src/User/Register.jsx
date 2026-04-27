@@ -20,6 +20,12 @@ function Register() {
 
     const registerDataChange = (e) => {
         if (e.target.name === 'avatar') {
+            const file = e.target.files?.[0];
+            if (!file) {
+                setAvatar('');
+                setAvatarPreview('./images/profile.webp');
+                return;
+            }
             const reader = new FileReader();
             reader.onload = () => {
                 if (reader.readyState === 2) {
@@ -27,7 +33,7 @@ function Register() {
                     setAvatar(reader.result);
                 }
             }
-            reader.readAsDataURL(e.target.files[0]);
+            reader.readAsDataURL(file);
         } else {
             setUser({ ...user, [e.target.name]: e.target.value })
         }
@@ -43,7 +49,9 @@ function Register() {
         myForm.set('name', name);
         myForm.set('email', email);
         myForm.set('password', password);
-        myForm.set('avatar', avatar);
+        if (avatar) {
+            myForm.set('avatar', avatar);
+        }
         dispatch(register(myForm));
     }
 

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import '../CartStyles/Cart.css';
 import { toast } from 'react-toastify';
-import { addItemsToCart, removeErrors, removeItemFromCart, removeMessage } from '../features/cart/cartSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { addItemsToCart, removeErrors, removeItemFromCart } from '../features/cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
-function CartItem({ item }) {
+function CartItem({ item, loading }) {
 
     const [quantity, setQuantity] = useState(item.quantity);
     const dispatch = useDispatch();
-
-    const { success, loading, error, message, cartItems } = useSelector(state => state.cart);
 
     const decreaseQuantity = () => {
         if (quantity <= 1) {
@@ -35,20 +33,6 @@ function CartItem({ item }) {
         }
     }
 
-    useEffect(() => {
-        if (error) {
-            toast.error(error.message, { position: 'top-center', autoClose: 3000 });
-            dispatch(removeErrors())
-        }
-    }, [dispatch, error]);
-
-    useEffect(() => {
-        if (success) {
-            toast.success(message, { position: 'top-center', autoClose: 3000, toastId:'cart-update' });
-            dispatch(removeMessage());
-        }
-    }, [dispatch, success, message]);
-
     const handleRemove = ()=>{
         if(loading) return;
         dispatch(removeItemFromCart(item.product));
@@ -58,7 +42,7 @@ function CartItem({ item }) {
     return (
         <div className="cart-item">
             <div className="item-info">
-                <img src={item.image} alt={item.name} className='item-image' />
+                <img src={item.image} alt={item.name} className='item-image' loading="lazy" decoding="async" />
                 <div className="item-details">
                     <h3 className="item-name">{item.name}</h3>
                     <p className="item-price"><strong>Price: </strong>{item.price.toFixed(2)}/-</p>
@@ -89,4 +73,4 @@ function CartItem({ item }) {
     )
 }
 
-export default CartItem
+export default memo(CartItem)

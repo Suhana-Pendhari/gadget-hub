@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema({
     avatar: {
         public_id: {
             type: String,
-            required: true
+            default: "default_avatar"
         },
         url: {
             type: String,
-            required: true
+            default: "/images/profile.webp"
         }
     },
     role: {

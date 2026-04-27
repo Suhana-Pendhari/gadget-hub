@@ -400,6 +400,19 @@
 .checkout-btn {
   transition: all 0.2s ease-in-out;
 }
+
+/* Performance overrides for smoother mobile scrolling */
+.cart-item {
+  transition: none !important;
+  contain: layout paint;
+}
+
+.quantity-button,
+.update-item-btn,
+.remove-item-btn,
+.checkout-btn {
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease !important;
+}
 .cart-page {
   width: 100%;
   max-width: 1180px;
@@ -1819,7 +1832,7 @@
 
   .cart-items,
   .price-summary {
-    width: 42%;
+    width: 55%;
     max-width: 100%;
     box-sizing: border-box;
   }

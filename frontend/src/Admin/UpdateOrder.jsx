@@ -33,7 +33,8 @@ function UpdateOrder() {
         paymentInfo = {},
         orderStatus,
         totalPrice,
-        createAt
+        createAt,
+        user = {}
     } = order;
 
     const paymentStatus = paymentInfo.status === 'succeeded' ? 'Paid' : paymentInfo.status === 'pending' ? 'Cash on Delivery' : 'Not Paid';
@@ -66,6 +67,13 @@ function UpdateOrder() {
             <PageTitle title="Update Order" />
             {loading ? (<Loader />) : (<div className="order-container">
                 <h1 className="order-title">Update Order</h1>
+                
+                <div className="user-details">
+                    <h2>Customer Details</h2>
+                    <p><strong>Customer Name: </strong>{user.name || 'N/A'}</p>
+                    <p><strong>Customer Email: </strong>{user.email || 'N/A'}</p>
+                </div>
+
                 <div className="order-details">
                     <h2>Order Information</h2>
                     <p><strong>Order ID: </strong>{orderId}</p>

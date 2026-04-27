@@ -17,6 +17,7 @@
 }
 
 .order-details,
+.user-details,
 .order-items,
 .order-status {
   margin-bottom: 30px;
@@ -27,6 +28,7 @@
 }
 
 .order-details h2,
+.user-details h2,
 .order-items h2,
 .order-status h2 {
   font-size: 1.5rem;
@@ -37,6 +39,7 @@
 }
 
 .order-details p,
+.user-details p,
 .order-items p,
 .order-status p {
   font-size: 1rem;

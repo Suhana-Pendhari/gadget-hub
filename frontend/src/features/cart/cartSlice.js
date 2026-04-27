@@ -33,10 +33,10 @@ const cartSlice = createSlice({
     reducers:{
         removeErrors:(state)=>{
             state.error = null;
-            
         },
         removeMessage:(state)=>{
             state.message = null;
+            state.success = false;
         },
         removeItemFromCart:(state, action)=>{
             state.removingId = action.payload;
@@ -59,6 +59,8 @@ const cartSlice = createSlice({
         builder.addCase(addItemsToCart.pending, (state)=>{
             state.loading = true;
             state.error = null;
+            state.success = false;
+            state.message = null;
         })
         .addCase(addItemsToCart.fulfilled, (state, action)=>{
             const item = action.payload;

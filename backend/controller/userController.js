@@ -1,27 +1,61 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import handleAsyncError from "../middleware/handleAsyncError.js";
 import User from "../models/userModel.js";
 import crypto from "crypto"
 import HandleError from "../utils/handleError.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
-import { v2 as cloudinary } from 'cloudinary';
+import uploadToCloudinary from '../utils/cloudinaryUpload.js';
+
+const debugLogFile = path.join(path.dirname(fileURLToPath(import.meta.url)), '../register-debug.log');
+fs.writeFileSync(debugLogFile, 'userController loaded\n');
 
 
 export const registerUser = handleAsyncError(async (req, res, next) => {
     const { name, email, password, avatar } = req.body;
-    const myCloud = await cloudinary.uploader.upload(avatar, {
-        folder: 'avatars',
-        width: 150,
-        crop: 'scale'
-    })
+    const uploadedAvatar = req.files?.avatar;
+
+    fs.appendFileSync(debugLogFile, `\n--- register request ---\n`);
+    fs.appendFileSync(debugLogFile, `body: ${JSON.stringify(req.body)}\n`);
+    fs.appendFileSync(debugLogFile, `files: ${JSON.stringify(Object.keys(req.files || {}))}\n`);
+    fs.appendFileSync(debugLogFile, `uploadedAvatar: ${uploadedAvatar ? JSON.stringify({
+        hasTempFilePath: Boolean(uploadedAvatar.tempFilePath),
+        hasData: Boolean(uploadedAvatar.data),
+        mimetype: uploadedAvatar?.mimetype,
+        name: uploadedAvatar?.name
+    }) : 'null'}\n`);
+    
+    let avatarData = {
+        public_id: 'default_avatar',
+        url: '/images/profile.webp'
+    };
+
+    const hasTempFilePath = Boolean(uploadedAvatar?.tempFilePath && uploadedAvatar.tempFilePath.trim());
+    const hasBufferData = Boolean(uploadedAvatar?.data && uploadedAvatar.data.length > 0);
+    const hasFileUpload = Boolean(uploadedAvatar && (hasTempFilePath || hasBufferData));
+    fs.appendFileSync('backend/register-debug.log', `hasFileUpload: ${hasFileUpload}\n`);
+
+    if (hasFileUpload) {
+        const myCloud = await uploadToCloudinary(uploadedAvatar, 'avatars');
+        avatarData = {
+            public_id: myCloud.public_id,
+            url: myCloud.url
+        };
+    } else if (avatar && typeof avatar === 'string' && avatar.trim().startsWith('data:')) {
+        const myCloud = await uploadToCloudinary(avatar, 'avatars');
+        avatarData = {
+            public_id: myCloud.public_id,
+            url: myCloud.url
+        };
+    }
+
     const user = await User.create({
         name,
         email,
         password,
-        avatar: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url
-        }
+        avatar: avatarData
     })
 
     // const token = user.getJWTToken();

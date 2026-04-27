@@ -4,12 +4,7 @@ import axios from 'axios';
 // Register API
 export const register = createAsyncThunk('user/register', async (userData, { rejectWithValue }) => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        const { data } = await axios.post('/api/v1/register', userData, config);
+        const { data } = await axios.post('/api/v1/register', userData);
         return data;
 
     } catch (error) {
@@ -56,12 +51,7 @@ export const logout = createAsyncThunk('user/logout', async (_, { rejectWithValu
 // Update profile API
 export const updateProfile = createAsyncThunk('user/updateProfile', async (userData, { rejectWithValue }) => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        const { data } = await axios.put('/api/v1/profile/update', userData, config);
+        const { data } = await axios.put('/api/v1/profile/update', userData);
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || { message: 'Profile Update Failed, Please try again Later' });

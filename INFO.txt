@@ -1,1 +1,3 @@
 7N7AD8Q3L4E7DTTAYRP6S8TF
+
+npx playwright test

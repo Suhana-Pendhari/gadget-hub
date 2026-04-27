@@ -5,11 +5,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Rating from '../components/Rating';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { createReview, getProductDetails, removeErrors, removeSuccess } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
-import { addItemsToCart, removeMessage } from '../features/cart/cartSlice';
+import { addItemsToCart, removeMessage, clearCart } from '../features/cart/cartSlice';
 import { getAllMyOrders } from '../features/order/orderSlice';
 
 
@@ -17,6 +17,8 @@ function ProductDetails() {
     const [userRating, setUserRating] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [selectedMedia, setSelectedMedia] = useState({ type: 'image', url: null });
+    const [isBuyNow, setIsBuyNow] = useState(false);
+    const [showCartToast, setShowCartToast] = useState(false);
     const getVideoUrl = (videoItem) => {
         if (!videoItem) return null;
         if (typeof videoItem === 'string') return videoItem;
@@ -34,7 +36,9 @@ function ProductDetails() {
     const errorMessage = typeof error === 'string' ? error : error?.message;
     const { loading: cartLoading, error: cartError, success, message, cartItems } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { id } = useParams();
+
     useEffect(() => {
         if (id) {
             dispatch(getProductDetails(id));
@@ -58,10 +62,14 @@ function ProductDetails() {
 
     useEffect(() => {
         if (success) {
-            toast.success(message, { position: 'top-center', autoClose: 3000 });
+            if (showCartToast) {
+                toast.success(message, { position: 'top-center', autoClose: 3000 });
+            }
             dispatch(removeMessage());
+            setShowCartToast(false);
+            setIsBuyNow(false);
         }
-    }, [dispatch, success, message]);
+    }, [dispatch, success, message, showCartToast]);
 
     const decreaseQuantity = () => {
         if (quantity <= 1) {
@@ -81,7 +89,15 @@ function ProductDetails() {
     }
 
     const addToCart = () => {
+        setShowCartToast(true);
         dispatch(addItemsToCart({ id, quantity }));
+    }
+
+    const buyNow = () => {
+        setIsBuyNow(true);
+        dispatch(clearCart());
+        dispatch(addItemsToCart({ id, quantity }));
+        navigate('/shipping');
     }
 
     const handleReviewSubmit = (e) => {
@@ -232,7 +248,10 @@ function ProductDetails() {
                                 <input type="text" value={quantity} className='quantity-value' readOnly />
                                 <button className="quantity-button" onClick={increaseQuantity}>+</button>
                             </div>
-                            <button className="add-to-cart-btn" onClick={addToCart} disabled={cartLoading}>{cartLoading ? 'Adding' : 'Add to Cart'}</button>
+                            <div className="product-action-buttons">
+                                <button className="add-to-cart-btn" onClick={addToCart} disabled={cartLoading}>{cartLoading ? 'Adding' : 'Add to Cart'}</button>
+                                <button className="buy-now-btn" onClick={buyNow} disabled={cartLoading}>Buy Now</button>
+                            </div>
                         </>)
                         }
 

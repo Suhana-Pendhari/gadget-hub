@@ -1,0 +1,7 @@
+userController loaded
+
+--- register request ---
+body: {"name":"Aman Pendhari","email":"aman@gmail.com","password":"@Aman786"}
+files: []
+uploadedAvatar: null
+hasFileUpload: false

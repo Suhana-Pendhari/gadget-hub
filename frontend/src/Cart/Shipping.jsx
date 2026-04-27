@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import '../CartStyles/Shipping.css';
 import PageTitle from '../components/PageTitle';
 import Navbar from '../components/Navbar';
@@ -19,42 +19,6 @@ function Shipping() {
     const [country, setCountry] = useState(shippingInfo.country || "");
     const [state, setState] = useState(shippingInfo.state || "");
     const [city, setCity] = useState(shippingInfo.city || "");
-    const [locationLib, setLocationLib] = useState({ Country: null, State: null, City: null });
-
-    useEffect(() => {
-        let isMounted = true;
-
-        import('country-state-city')
-            .then((module) => {
-                if (isMounted) {
-                    setLocationLib({
-                        Country: module.Country,
-                        State: module.State,
-                        City: module.City
-                    });
-                }
-            })
-            .catch(() => {
-                toast.error('Failed to load location data', { position: 'top-center', autoClose: 3000 });
-            });
-
-        return () => {
-            isMounted = false;
-        };
-    }, []);
-
-    const countries = useMemo(
-        () => (locationLib.Country ? locationLib.Country.getAllCountries() : []),
-        [locationLib.Country]
-    );
-    const states = useMemo(
-        () => (country && locationLib.State ? locationLib.State.getStatesOfCountry(country) : []),
-        [country, locationLib.State]
-    );
-    const cities = useMemo(
-        () => (country && state && locationLib.City ? locationLib.City.getCitiesOfState(country, state) : []),
-        [country, state, locationLib.City]
-    );
 
     const shippingInfoSubmit = (e) => {
         e.preventDefault();
@@ -94,40 +58,18 @@ function Shipping() {
                     <div className="shipping-section">
                         <div className="shipping-form-group">
                             <label htmlFor="country">Country</label>
-                            <select name="country" id="country" value={country} onChange={(e) => {
-                                setCountry(e.target.value)
-                                setState('');
-                                setCity('');
-                            }}>
-                                <option value="">Select a Country</option>
-                                {countries.map((item) => (
-                                    <option value={item.isoCode} key={item.isoCode}>{item.name}</option>
-                                ))}
-                            </select>
+                            <input type="text" id='country' name='country' placeholder='Enter your country' value={country} onChange={(e) => setCountry(e.target.value)} />
                         </div>
 
-                        {country && <div className="shipping-form-group">
+                        <div className="shipping-form-group">
                             <label htmlFor="state">State</label>
-                            <select name="state" id="state" value={state} onChange={(e) => {
-                                setState(e.target.value);
-                                setCity('');
-                            }}>
-                                <option value="">Select a State</option>
-                                {states.map((item) => (
-                                    <option value={item.isoCode} key={item.isoCode}>{item.name}</option>
-                                ))}
-                            </select>
-                        </div>}
+                            <input type="text" id='state' name='state' placeholder='Enter your state' value={state} onChange={(e) => setState(e.target.value)} />
+                        </div>
 
-                        {state && <div className="shipping-form-group">
+                        <div className="shipping-form-group">
                             <label htmlFor="city">City</label>
-                            <select name="city" id="city" value={city} onChange={(e) => setCity(e.target.value)}>
-                                <option value="">Select a City</option>
-                                {cities.map((item) => (
-                                    <option value={item.name} key={item.name}>{item.name}</option>
-                                ))}
-                            </select>
-                        </div>}
+                            <input type="text" id='city' name='city' placeholder='Enter your city' value={city} onChange={(e) => setCity(e.target.value)} />
+                        </div>
                     </div>
 
                     <button className="shipping-submit-btn">Continue</button>

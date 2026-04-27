@@ -1,25 +1,49 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import '../CartStyles/Cart.css';
 import PageTitle from '../components/PageTitle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import CartItem from './CartItem';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { removeErrors, removeMessage } from '../features/cart/cartSlice';
 
 function Cart() {
 
-    const { cartItems } = useSelector(state => state.cart);
-    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const tax = subtotal*0.18;
-    const shipping = subtotal>500?0:50;
-    const total = subtotal+tax+shipping;
+    const { cartItems, loading, error, success, message } = useSelector(state => state.cart);
+    const dispatch = useDispatch();
+    const { subtotal, tax, shipping, total } = useMemo(() => {
+        const computedSubtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        const computedTax = computedSubtotal * 0.18;
+        const computedShipping = computedSubtotal > 500 ? 0 : 50;
+        return {
+            subtotal: computedSubtotal,
+            tax: computedTax,
+            shipping: computedShipping,
+            total: computedSubtotal + computedTax + computedShipping
+        };
+    }, [cartItems]);
 
     const navigate = useNavigate();
 
     const checkoutHandler = ()=>{
         navigate(`/login?redirect=/shipping`);
     }
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message || error, { position: 'top-center', autoClose: 3000 });
+            dispatch(removeErrors());
+        }
+    }, [dispatch, error]);
+
+    useEffect(() => {
+        if (success && message) {
+            toast.success(message, { position: 'top-center', autoClose: 3000, toastId: 'cart-update' });
+            dispatch(removeMessage());
+        }
+    }, [dispatch, success, message]);
 
     return (
         <>
@@ -44,7 +68,9 @@ function Cart() {
                             </div>
 
                             {/* Cart Items */}
-                            {cartItems && cartItems.map(item => <CartItem item={item} key={item.name} />)}
+                            {cartItems && cartItems.map(item => (
+                                <CartItem item={item} key={item.product} loading={loading} />
+                            ))}
 
                         </div>
                     </div>
